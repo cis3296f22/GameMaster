@@ -1,3 +1,15 @@
+// Project Scrum Pregame
+// | Due: Wed Oct 26, 2022 11:00amDue: Wed Oct 26, 2022 11:00am
+// Ungraded, 10 Possible Points
+// 10 Possible Points
+// Attempt
+// Attempt 1
+
+// IN PROGRESS
+// Next Up: Submit Assignment
+
+
+
 const { Client, Intents, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
