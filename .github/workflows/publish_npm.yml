@@ -1,0 +1,46 @@
+name: Publish npm
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  npm-js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies 🔧
+        run: yarn install --frozen-lockfile
+      - name: Prepare release 🚀
+        run: yarn release
+      - name: Publish package on NPM 📦
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  npm-github:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@utarwyn'
+      - name: Add scope to package name 📝
+        run: npx --yes change-package-name @utarwyn/discord-tictactoe
+      - name: Install dependencies 🔧
+        run: yarn install --frozen-lockfile
+      - name: Prepare release 🚀
+        run: yarn release
+      - name: Publish package on GitHub Packages 📦
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
