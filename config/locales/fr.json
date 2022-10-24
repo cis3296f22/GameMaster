@@ -1,0 +1,30 @@
+{
+  "command": {
+    "description": "Jouer une partie de TicTacToe",
+    "option-user": "Membre avec lequel vous voulez jouer"
+  },
+  "duel": {
+    "title": ":crossed_swords: Demande de duel",
+    "challenge": "**{initier}** souhaite te défier au morpion !",
+    "action": "Réagis à ce message pour accepter ou décliner le duel.",
+    "expire": ":x: `{invited}` n'a pas répondu à la demande dans les temps.",
+    "reject": ":x: `{invited}` a rejeté votre proposition de duel.",
+    "unknown-user": "vous ne pouvez pas défier ce membre.",
+    "no-bot": "vous ne pouvez pas défier un robot.",
+    "button": {
+      "accept": "Accepter",
+      "decline": "Décliner"
+    }
+  },
+  "game": {
+    "title": ":game_die: `{player1}` **VS** `{player2}`",
+    "action": "{player}, sélectionnez votre action:",
+    "load": "Les réactions chargent, merci de patienter...",
+    "end": "Personne n'a gagné la partie, c'est une égalité ! On réessaie ?",
+    "win": ":tada: {player} a gagné la partie !",
+    "expire": ":x: La partie vient **d'expirer**... peut-être à cause de l'inactivité d'un joueur.",
+    "in-progress": "vous ne pouvez pas démarrer de partie, attendez que celle en cours se termine.",
+    "waiting-ai": ":robot: L'IA joue, merci de patienter...",
+    "ai": "l'IA"
+  }
+}
