@@ -22,3 +22,4 @@ config/*
 .idea/
 *.iml
 .env
+config/config.example.json

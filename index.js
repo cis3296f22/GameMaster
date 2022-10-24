@@ -1,14 +1,5 @@
 const TicTacToe = require('discord-tictactoe');
-const Discord = require('discord.js');
-const client = new Discord.Client({
-    intents: [
-        Discord.Intents.FLAGS.GUILDS,
-        Discord.Intents.FLAGS.GUILD_MESSAGES,
-        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-    ],
-});
-   
-new TicTacToe({ language: 'fr', gameBoardReactions: true })
-    .attach(client);
-   
-client.login(process.env.TOKEN);
+// set "command" to an empty string and "textCommand" with prefix you want
+new TicTacToe({ textCommand: '-tictactoe', command: '' })
+   .login(process.env.TOKEN)
+   .then(() => console.log('TicTacToe bot is ready to be used.'));
