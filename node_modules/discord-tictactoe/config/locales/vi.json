@@ -1,0 +1,30 @@
+{
+  "command": {
+    "description": "Chơi một ván cờ caro",
+    "option-user": "Người mà bạn muốn chơi cùng"
+  },
+  "duel": {
+    "title": ":crossed_swords: Lời thách đấu mới",
+    "challenge": "**{initier}** vừa thách đấu bạn!",
+    "action": "Thả cảm xúc vào tin nhắn này để chấp nhận hoặc từ chối lời mời.",
+    "expire": ":x: `{invited}` đã không phản hồi gì về lời mời của bạn.",
+    "reject": ":x: `{invited}` đã từ chối lời mời của bạn.",
+    "unknown-user": "Bạn không thể thách đấu **{username}**. Hãy kiếm một người khác.",
+    "no-bot": "bạn không thể thách đấu với bots.",
+    "button": {
+      "accept": "Chấp nhận",
+      "decline": "Từ chối"
+    }
+  },
+  "game": {
+    "title": ":game_die: `{player1}` **VS** `{player2}`",
+    "action": "{player}, lựa chọn lượt đi của bạn:",
+    "load": "Đang tải reactions, chờ chút nha...",
+    "end": "Không ai thắng màn thách đấu này. Thử lại chứ?",
+    "win": ":tada: {player} đã thắng ván đấu!",
+    "expire": ":x: Ván đấu đã **hết giờ**... Bởi vì một người đã không tương tác.",
+    "in-progress": "you cannot start another game, please wait for current one to end.",
+    "waiting-ai": ":robot: Máy đang chơi, chờ chút nha...",
+    "ai": "Máy"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "command": {
+    "description": "Play a game of TicTacToe",
+    "option-user": "User you want to play with"
+  },
+  "duel": {
+    "title": ":crossed_swords: New duel challenge",
+    "challenge": "**{initier}** challenged you to a duel!",
+    "action": "React to this message to accept or decline the duel.",
+    "expire": ":x: `{invited}` did not rise up to the challenge.",
+    "reject": ":x: `{invited}` has rejected the duel.",
+    "unknown-user": "you cannot challenge that user.",
+    "no-bot": "you cannot challenge bots.",
+    "button": {
+      "accept": "Accept",
+      "decline": "Decline"
+    }
+  },
+  "game": {
+    "title": ":game_die: `{player1}` **VS** `{player2}`",
+    "action": "{player}, select your move:",
+    "load": "Reactions are loading, please wait...",
+    "end": "No one won the game, it's a tie! Let's try again?",
+    "win": ":tada: {player} has won the game!",
+    "expire": ":x: Game has **expired**... maybe because of one user inactivity.",
+    "in-progress": "you cannot start another game, please wait for current one to end.",
+    "waiting-ai": ":robot: AI is playing, please wait...",
+    "ai": "the AI"
+  }
+}
