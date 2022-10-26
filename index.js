@@ -35,10 +35,10 @@ client.on('ready', () => {
             ]
             
         },
-        GUILDID
-        
-    );
+        GUILDID,
     console.log("Command: -tictacttoe registered")
+    );
+    
 
     // Listening for interactions
     client.on('interactionCreate', interaction => {
