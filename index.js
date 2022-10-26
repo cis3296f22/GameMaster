@@ -33,13 +33,17 @@ client.on('ready', () => {
                     required: false
                 }
             ]
+            
         },
         GUILDID
+        
     );
+    console.log("Command: -tictacttoe registered")
 
     // Listening for interactions
     client.on('interactionCreate', interaction => {
         if (interaction instanceof Discord.CommandInteraction && interaction.commandName === 'tictactoe') {
+            console.log("Received: -tictacttoe from ")
             game.handleInteraction(interaction);
         }
     });
