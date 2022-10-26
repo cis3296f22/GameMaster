@@ -43,7 +43,7 @@ client.on('ready', () => {
     // Listening for interactions
     client.on('interactionCreate', interaction => {
         if (interaction instanceof Discord.CommandInteraction && interaction.commandName === 'tictactoe') {
-            console.log("Received: -tictacttoe from ")
+            console.log("Received: -tictacttoe from user")
             game.handleInteraction(interaction);
         }
     });
