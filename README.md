@@ -5,6 +5,10 @@ Adding an screenshot or a mockup of your application in action would be nice.
 
 ![](images/ttt.png)
 
+# How to add the bot to your server
+
+Invite Link: https://discord.com/api/oauth2/authorize?client_id=1032689897573732483&permissions=8&scope=bot%20applications.commands
+
 # How to run
 
 Start the bot with `node index.js` OR `nodemon index.js` and it should be online!
