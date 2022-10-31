@@ -7,9 +7,10 @@ Adding an screenshot or a mockup of your application in action would be nice.
 
 # How to add the bot to your server
 
-Invite Link: https://discord.com/api/oauth2/authorize?client_id=1032689897573732483&permissions=8&scope=bot%20applications.commands
+- Invite Link: https://discord.com/api/oauth2/authorize?client_id=1032689897573732483&permissions=8&scope=bot%20applications.commands
 Use the dropdown to select the server you would like to add GameMaster in.
-Click 'Continue'
+
+- Click 'Continue'
 
 # How to run
 
