@@ -1,4 +1,6 @@
 # GameMaster (Games with Friends!)
+GameMaster is a discord bot that allows users to play smaller board games such as Tic Tac Toe (and hopefully connect four). The goal of GameMaster is to provide a hub where users can play multiple games with friends using Discord. User's can customize settings to their liking for an optimal experience.
+
 Put here a short paragraph describing your project. 
 Adding an screenshot or a mockup of your application in action would be nice.  
 
@@ -47,8 +49,7 @@ Run `npm install` to install all of the dependencies
 
 ![](images/npminstall.png)
 
-Now you need to put your bot token in a `.env` file.
-You will also need to put the guild ID of the server you want the bot to be in.
+Now you need to put your bot token in a `.env` file. In the project directory create a file called `.env`. Then you can add your token and optionally if you choose you can add the  guild ID of the server you want the bot to be in to the .env file also as shown below.
 
 ```
 TOKEN=<TOKEN>
