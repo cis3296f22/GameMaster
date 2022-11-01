@@ -9,12 +9,15 @@ Adding an screenshot or a mockup of your application in action would be nice.
 
 # How to add the bot to your server
 
-- Invite Link: https://discord.com/api/oauth2/authorize?client_id=1032689897573732483&permissions=8&scope=bot%20applications.commands
-Use the dropdown to select the server you would like to add GameMaster in.
+- Click the invite Link: https://discord.com/api/oauth2/authorize?client_id=1032689897573732483&permissions=8&scope=bot%20applications.commands
+
+- Use the dropdown to select the server you would like to add GameMaster in.
 
 - Click 'Continue'
 
 # How to run
+- Clone the repository using the green code button at the top of the web page.
+- If you are not familiar with github and cloning repositories please watch this link: https://www.youtube.com/watch?v=q9wc7hUrW8U
 
 Start the bot with `node index.js` OR `nodemon index.js` and it should be online!
 
@@ -27,11 +30,12 @@ Now you can do `/ping` and should get a response!
 To start a tic tac toe game, type `/ttt` and click the buttons! 
 
 # How to contribute
-Follow this project board to know the latest status of the project: [http://...]([http://...])  
 
 ### How to build
 
-- Use this github repository: ... 
+- Clone this github repository. If you are unfamiliar with how to clone a github repository please watch this short video: https://www.youtube.com/watch?v=q9wc7hUrW8U
+
+### How to Run
 
 If you want to run this yourself, you will need:
 
@@ -48,10 +52,18 @@ Once you have sucessfully invited the bot to your server, you need to install th
 Run `npm install` to install all of the dependencies
 
 ![](images/npminstall.png)
-
 Now you need to put your bot token in a `.env` file. In the project directory create a file called `.env`. Then you can add your token and optionally if you choose you can add the  guild ID of the server you want the bot to be in to the .env file also as shown below.
-
 ```
 TOKEN=<TOKEN>
 GUILD=<GUILD ID>
 ```
+Start the bot with `node index.js` OR `nodemon index.js` and it should be online!
+
+You now need to deploy the slash commands. Use the `?deploy` command to deploy all of the commands to Discord.
+
+![](images/deploy.png)
+
+Now you can do `/ping` and should get a response!
+
+To start a tic tac toe game, type `/ttt` and click the buttons!
+
