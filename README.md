@@ -1,7 +1,8 @@
 # GameMaster (Games with Friends!)
 GameMaster is a discord bot that allows users to play smaller board games such as Tic Tac Toe (and hopefully connect four). The goal of GameMaster is to provide a hub where users can play multiple games with friends using Discord. User's can customize settings to their liking for an optimal experience.
 
-<iframe src="https://discord.com/widget?id=1032390183271813221&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+![Discord Banner 3](https://discordapp.com/api/guilds/1032390183271813221/widget.png?style=banner3)
+
 
 Put here a short paragraph describing your project. 
 Adding an screenshot or a mockup of your application in action would be nice.  
