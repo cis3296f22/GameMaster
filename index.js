@@ -11,10 +11,10 @@ const GUILDID = process.env.GUILDID;
 // console.log(process.env.GUILDID);
 
 const client = new Discord.Client({
-    intents: [
-        Discord.Intents.FLAGS.GUILDS,
-        Discord.Intents.FLAGS.GUILD_MESSAGES
-    ],
+  intents: [
+    Discord.Intents.FLAGS.GUILDS,
+    Discord.Intents.FLAGS.GUILD_MESSAGES
+  ],
 });
 const game = new TicTacToe({ language: 'en', commandOptionName: 'user' });
 
@@ -32,13 +32,12 @@ client.on('ready', () => {
                     description: "Mention the User",
                     required: false
                 }
-            ]
-
+            ]            
         },
         GUILDID,
-        console.log("Command: -tictacttoe registered")
+    console.log("Command: -tictacttoe registered")
     );
-
+    
 
     // Listening for interactions
     client.on('interactionCreate', interaction => {
@@ -49,4 +48,4 @@ client.on('ready', () => {
     });
 });
 
-client.login(MTAzNDUwMzU5MTY2ODQ4NjE3Ng.GO95Ky.IrxFPl-RxwNvM4dfqTjSoGQgWXBz-6Jbl4kZCU);
+client.login(TOKEN);
