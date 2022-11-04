@@ -1,4 +1,5 @@
 const TicTacToe = require('discord-tictactoe');
+const Connect4 = require('discord-connectFour');
 const Discord = require('discord.js');
 //
 const dotenv = require('dotenv');
@@ -58,7 +59,7 @@ client.on('interactionCreate', interaction => {
         }
         if (interaction instanceof Discord.CommandInteraction && interaction.commandName === 'connectfour') {
             console.log("Received: -connectfour from user")
-            const game = new TicTacToe({ language: 'en', commandOptionName: 'user' });
+            const game = new Connect4({ language: 'en', commandOptionName: 'user' });
             game.handleInteraction(interaction);
         }
     });

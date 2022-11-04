@@ -1,0 +1,30 @@
+{
+  "command": {
+    "description": "Play a game of TicTacToe",
+    "option-user": "User you want to play with"
+  },
+  "duel": {
+    "title": ":crossed_swords: Новая дуэль",
+    "challenge": "**{initier}** Вызвал Вас на дуэль!",
+    "action": "Нажмите на реакции ниже для принятия или отклонения приглашения!",
+    "expire": ":x: `{invited}` Не ответил на Ваше предложение.",
+    "reject": ":x: `{invited}` Отклонил вызов на игру.",
+    "unknown-user": "Вы не можете вызвать данного игрока **{username}**. Пожалуйста линканите другого пользователя.",
+    "no-bot": "you cannot challenge bots.",
+    "button": {
+      "accept": "Принять",
+      "decline": "Отклонить"
+    }
+  },
+  "game": {
+    "title": ":game_die: `{player1}` **Против** `{player2}`",
+    "action": "{player}, Сделайте Ваш ход:",
+    "load": "Реакции загружаются, подождите...",
+    "end": "Ничья! Может быть снова попробуем?)",
+    "win": ":tada:{player} Выиграл игру!",
+    "expire": ":x: Игра была досрочно завершена... Может потому что никто не активил?",
+    "in-progress": "you cannot start another game, please wait for current one to end.",
+    "waiting-ai": ":robot: Компьютер думает, подождите...",
+    "ai": "Кампудахтр"
+  }
+}
