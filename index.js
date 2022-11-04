@@ -32,8 +32,7 @@ client.on('ready', () => {
                     description: "Mention the User",
                     required: false
                 }
-            ]
-            
+            ]            
         },
         GUILDID,
     console.log("Command: -tictacttoe registered")
