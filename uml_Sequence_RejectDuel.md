@@ -9,7 +9,7 @@ sequenceDiagram
     Note left of GameMaster: Bot is running on Heroku
     Note left of PlayerOne: PlayerOne types slash command in server to challenge PlayerTwo to a tictactoe game
     PlayerOne-->>+GameMaster: /tictactoe PlayerTwo
-    GameMaster->>-GameMaster: Created Game Objects
+    GameMaster->>GameMaster: Created Game Objects
     Note left of GameMaster: GameObjects include TicTacToe, EventHandler, and TicTacToeBot objects
     GameMaster->>+PlayerTwo: PlayerOne Duel Challenge: challengeAnswered(var): bool
     PlayerTwo-->>-GameMaster: Duel Rejected
