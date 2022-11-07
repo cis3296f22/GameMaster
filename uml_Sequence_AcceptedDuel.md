@@ -15,7 +15,7 @@ sequenceDiagram
     GameMaster->>+PlayerTwo: PlayerOne Duel Challenge
     PlayerTwo-->>-GameMaster: Duel Accepted: challengeAnswered()
     GameMaster->>+PlayerOne: PlayerTwo has Accepted Duel
-    loop collect message
+    loop COLLECT MESSAGES
     Note left of PlayerOne: Player is chosen at random to make the first move in the game
     TicTacToeBot->>+PlayerOne: Listen for move
     PlayerOne-->>-TicTacToeBot: Move Made: isMoveValid(var): bool
@@ -23,10 +23,14 @@ sequenceDiagram
     TicTacToeBot->>+PlayerTwo: Listen for move
     PlayerTwo-->>-TicTacToeBot: Move Made: isMoveValid(var): bool
     TicTacToeBot->>+TicTacToeBot: updateBoard(var,var): void
-    TicTacToeBot->>+TicTacToeBot: computerWinner(): int
-    Note left of TicTacToeBot: Check if moves resulted in a winner
+    TicTacToeBot->>-TicTacToeBot: computerWinner(): int
+    TicTacToeBot->>PlayerOne: Report Winner
+    TicTacToeBot->>PlayerTwo: Report Winner
+    Note left of TicTacToeBot: Check if moves resulted in a winner, report players on a win, and exit loop
     end
-    TicTacToeBot->>GameMaster: Report Winner
-    GameMaster->>TicTacToeBot: Destroy Game Objects
+    TicTacToeBot->>TicTacToeBot: Destroy Game Objects
 ```
+
+This sequence diagram illustrates a player challenging another player to a TicTacToe duel. PlayerOne uses slash command /tictactoe PlayerTwo to challenge to a game of TicTacToe. GameMaster recieves the slash command and instantiates the necessary objects to run a game of TicTacToe. TicTacToeBot then sends the duel request to PlayerTwo. PlayerTwo responds accepts the duel. This results in TicTacToeBot collecting messages from PlayerOne and PlayerTwo. The first move of the game is chosen at random. Each move is verified to make sure it is the correct player making the move. The board is updated after everymove. After each player makes a move TicTacToeBot checks for a winner. If no winner is found the process is repeated until a player has won. Once a player has won each player is notified. TicTacToeBot and associated objects are then destroyed. If a new game wants to be played it will be initiated with GameMaster.
+
             
