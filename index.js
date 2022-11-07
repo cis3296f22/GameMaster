@@ -1,5 +1,6 @@
 const TicTacToe = require('discord-tictactoe');
 const Connect4 = require('discord-connectFour');
+const RPS = require('discord-rockpaperscissors');
 const Discord = require('discord.js');
 //
 const dotenv = require('dotenv');
@@ -50,7 +51,22 @@ client.on('ready', () => {
         GUILDID,
     console.log("Command: -connectfour registered")
     );
-
+    client.application.commands.create(
+        {
+            name: 'rockpaperscissors',
+            description: 'Play RockPaperScissors',
+            options: [
+                {
+                    type: 'USER',
+                    name: 'user',
+                    description: "Mention the User",
+                    required: false
+                }
+            ]            
+        },
+        GUILDID,
+    console.log("Command: -rockpaperscissors registered")
+    );
 client.on('interactionCreate', interaction => {
         if (interaction instanceof Discord.CommandInteraction && interaction.commandName === 'tictactoe') {
             console.log("Received: -tictacttoe from user")
@@ -61,6 +77,11 @@ client.on('interactionCreate', interaction => {
             console.log("Received: -connectfour from user")
             const game = new Connect4({ language: 'en', commandOptionName: 'user' });
             game.handleInteraction(interaction);
+        }
+        if (interaction instanceof Discord.CommandInteraction && interaction.commandName === 'rockpaperscissors') {
+            console.log("Received: -rockpaperscissors from user")
+            // const game = new RPS({ language: 'en', commandOptionName: 'user' });
+            // game.handleInteraction(interaction);
         }
     });
 });
