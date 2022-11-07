@@ -11,23 +11,14 @@ sequenceDiagram
     Note left of GameMaster: Bot is running on Heroku
     Note left of PlayerOne: PlayerOne types slash command in server to challenge PlayerTwo to a tictactoe game
     PlayerOne-->>+GameMaster: /tictactoe PlayerTwo
-    GameMaster->>-TicTacToeBot: Created Game Objects
+    GameMaster->>TicTacToeBot: Created Game Objects
+   
     Note left of GameMaster: GameObjects include TicTacToe, EventHandler, and TicTacToeBot objects
-    GameMaster->>+PlayerTwo: PlayerOne Duel Challenge
-    PlayerTwo-->>-GameMaster: Duel Accepted: challengeAnswered()
-    GameMaster->>+PlayerOne: PlayerTwo has Accepted Duel
-    Note left of PlayerOne: Player is chosen at random to make the first move in the game
-    loop collect message
-    TicTacToeBot->>+PlayerOne: Listen for move
-    PlayerOne-->>-TicTacToeBot: Move Made: isMoveValid(var): bool
-    TicTacToeBot->>+TicTacToeBot: updateBoard(var,var): void
-    TicTacToeBot->>+PlayerTwo: Listen for move
-    PlayerTwo-->>-TicTacToeBot: Move Made: isMoveValid(var): bool
-    TicTacToeBot->>+TicTacToeBot: updateBoard(var,var): void
-    TicTacToeBot->>+TicTacToeBot: computerWinner(): int
-    Note left of TicTacToeBot: Check if moves resulted in a winner
-    end
-    TicTacToeBot->>GameMaster: Report Winner
-    GameMaster->>TicTacToeBot: Destroy Game Objects
+    TicTacToeBot->>+PlayerTwo: PlayerOne Duel Challenge
+    PlayerTwo-->>-TicTacToeBot: Duel Accepted: challengeAnswered()
+    TicTacToeBot->>+PlayerOne: PlayerTwo has Rejected Duel
+    TicTacToeBot->>TicTacToeBot: Destroy Game Objects
     
 ```
+
+This sequence diagram illustrates a player challenging another player to a TicTacToe duel. PlayerOne uses slash command /tictactoe PlayerTwo to challenge to a game of TicTacToe. GameMaster recieves the slash command and instantiates the necessary objects to run a game of TicTacToe. TicTacToeBot then sends the duel request to PlayerTwo. PlayerTwo responds rejected the duel. This results in TicTacToeBot terminating along with all the associated objects.
