@@ -1,6 +1,7 @@
 # Sequence Diagram For Player Duel Rejected
+
 ```mermaid
-sequenceDiagram:
+sequenceDiagram
   
     participant Main as GameMaster
     participant PlayerOne as PlayerOne
