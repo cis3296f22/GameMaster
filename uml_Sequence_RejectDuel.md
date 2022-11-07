@@ -12,8 +12,8 @@ sequenceDiagram
     GameMaster->>-GameMaster: Created Game Objects
     Note left of GameMaster: GameObjects include TicTacToe, EventHandler, and TicTacToeBot objects
     GameMaster->>+PlayerTwo: PlayerOne Duel Challenge: challengeAnswered(var): bool
-    PlayerTwo-->>-GameMaster: Duel Rejected
-    GameMaster->>+PlayerOne: PlayerTwo has rejected the dual
-    GameMaster->>GameMaster: Destroy Game Objects
+    PlayerTwo-->>+GameMaster: Duel Rejected
+    GameMaster->>PlayerOne: PlayerTwo has rejected the dual
+    GameMaster->>-GameMaster: Destroy Game Objects
     
 ```
