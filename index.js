@@ -1,6 +1,6 @@
 const TicTacToe = require('discord-tictactoe');
 // const Connect4 = require('discord-connectFour');
-const RPS = require('./rps.js');
+const RPS = require('./slashcommands/rps.js');
 // const RPS = require('discord-rock-paper-scissor');
 const Discord = require('discord.js');
 const { MessageEmbed } = require("discord.js");
@@ -85,88 +85,52 @@ client.on('interactionCreate', async interaction => {
         if (interaction instanceof Discord.CommandInteraction && interaction.commandName === 'rps') {
             console.log("Received: -rockpaperscissors from user")
 
-            const chooseArr = ["⛰️", "📰", "✂️"];
+            // const chooseArr = ["⛰️", "📰", "✂️"];  
 
-            const embed = new MessageEmbed()
-                    .setTitle("Rock Paper Scissors")
-                    .setDescription("Add a a reaction to one of these emojies to play the game!")
-                    .setColor("#ffffff")
-                    .setTimestamp()
-                
-        
+            // const embed = new MessageEmbed()
+            //     .setTitle("Rock Paper Scissors")
+            //     .setDescription("Add a reaction to one of these emojies to play the game!\n" + chooseArr)
+            //     .setColor("#ffffff")
+            //     .setTimestamp()
 
-            // await interaction.reply({embeds: [embed]});
+            // // let msg = await message.channel.send({embeds: [embed]});
+            // let msg = await interaction.reply({
+            //     embeds: [embed],
+            //     fetchReply: true
+            // });
 
-            let msg = await interaction.reply({embeds: [embed]});
-            const rockFilter = (reaction, user) => reaction.emoji.name === chooseArr[0] && user.id === message.author.id;
+            // const rockFilter = (reaction, user) => reaction.emoji.name === chooseArr[0] && user.id === message.author.id;
 
-        const rock = interaction.createReactionCollector(rockFilter, {time: 8000, dispose: true});
-
-
-
-        rock.on("collect" , r => {
-            r.users.remove(message.author.id);
-            const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
-
-            
-            console.log(r.emoji.name);
-            const result = getResult(r.emoji.name, botChoice);
-            console.log(result);
-            const embed = new MessageEmbed()
-                .setTitle(result)
-                .setDescription(r.emoji.name + 'vs' + botChoice);
-
-            msg.edit({ embeds: [embed] });
-        })
-
-        function getResult(me, clientChosen) {
-            if ((me === "⛰️" && clientChosen === "✂️") ||
-                (me === "📰" && clientChosen === "⛰️") ||
-                (me === "✂️" && clientChosen === "📰")) {
-                    return "You won!";
-                    } else if (me === clientChosen) {
-                            return "It's a tie";
-                    } else {
-                            return "You lost!";
-                    }
-            }
+            // const rock = msg.createReactionCollector(rockFilter, {time: 8000, dispose: true});
 
 
 
-            
+            // rock.on("collect" , r => {
+            //     r.users.remove(msg.author.id);
+            //     const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
 
-           
+                    
+            //     console.log(r.emoji.name);
+            //     const result = getResult(r.emoji.name, botChoice);
+            //     console.log(result);
+            //     const embed = new MessageEmbed()
+            //         .setTitle(result)
+            //         .setDescription(r.emoji.name + 'vs' + botChoice);
 
-            
-            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            // const m = await message.channel.send(embed);
-            // const reacted = await interaction.promptMessage('m', interaction.guild., 30, chooseArr);
-        
-            // const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
-                
-            // const result = getResult(reacted, botChoice);
-            // const result = await getResult(reacted, botChoice);
+            //         msg.edit({ embeds: [embed] });
+            //     })
 
-            // await m.clearReactions();
-                
-            // embed
-            //     .setDescription("")
-            //     .setField(result, '${reacted} vs ${botChoice}');
-            // m.edit(embed)
-        
-            // function getResult(me, clientChosen) {
+            //     function getResult(me, clientChosen) {
             //         if ((me === "⛰️" && clientChosen === "✂️") ||
             //             (me === "📰" && clientChosen === "⛰️") ||
             //             (me === "✂️" && clientChosen === "📰")) {
             //                 return "You won!";
-            //             } else if (me === clientChosen) {
-            //                 return "It's a tie";
-            //             } else {
-            //                 return "You lost!";
-            //             }
+            //                 } else if (me === clientChosen) {
+            //                         return "It's a tie";
+            //                 } else {
+            //                         return "You lost!";
+            //                 }
             //         }
-                    
-        
         }              
     });
 });

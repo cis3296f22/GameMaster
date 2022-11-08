@@ -27,10 +27,11 @@ const run = async (client, interaction) => {
             
         console.log(r.emoji.name);
         const result = getResult(r.emoji.name, botChoice);
+
         console.log(result);
         const embed = new MessageEmbed()
             .setTitle(result)
-            .setDescription(r.emoji.name + 'vs' + botChoice);
+            .setDescription(r.emoji.name + 'vs' + botChoice)
 
             msg.edit({ embeds: [embed] });
         })
