@@ -1,6 +1,26 @@
 {
   "dependencies": {
+    "discord-rock-paper-scissor": "^1.1.1",
     "discord-tictactoe": "^3.1.0",
+    "discord.js": "^13.12.0",
     "dotenv": "^16.0.3"
-  }
+  },
+  "name": "gamemaster",
+  "description": "GameMaster is a discord bot that allows users to play smaller board games such as Tic Tac Toe (and hopefully connect four). The goal of GameMaster is to provide a hub where users can play multiple games with friends using Discord. User's can customize settings to their liking for an optimal experience.",
+  "version": "1.0.0",
+  "main": "index3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cis3296f22/GameMaster.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cis3296f22/GameMaster/issues"
+  },
+  "homepage": "https://github.com/cis3296f22/GameMaster#readme"
 }
