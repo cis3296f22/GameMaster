@@ -4,7 +4,7 @@ const run = async (client, interaction) => {
 
     const embed = new MessageEmbed()
         .setTitle("Rock Paper Scissors")
-        .setDescription("Add a reaction to one of these emojies to play the game!\n" + chooseArr)
+        .setDescription("React with one of these emojis to play the game!\n" + chooseArr)
         .setColor("#ffffff")
         .setTimestamp()
 
@@ -13,6 +13,10 @@ const run = async (client, interaction) => {
         embeds: [embed],
         fetchReply: true
     });
+
+        await msg.react(chooseArr[0]);
+        await msg.react(chooseArr[1]);
+        await msg.react(chooseArr[2]);
 
     const rockFilter = (reaction, user) => reaction.emoji.name === chooseArr[0] && user.id === message.author.id;
 

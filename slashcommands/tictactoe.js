@@ -5,7 +5,15 @@ const run = async (client, interaction) => {
     game.handleInteraction(interaction);
 }
     module.exports = {
-	name: "tictactoe",
-    description: "TicTacToe",
-    run
+        name: 'tictactoe',
+        description: 'Play tictactoe',
+        options: [
+            {
+                type: 'USER',
+                name: 'user',
+                description: "Mention the User",
+                required: false
+            }
+        ],            
+        run
 }
