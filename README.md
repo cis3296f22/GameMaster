@@ -13,7 +13,7 @@ GameMaster is a discord bot that allows users to play smaller board games such a
 
 # How to use GameMaster in your server
 
-- GameMaster is controlled using slash commands.  Begin by typing '/' in a shared channeo for more options.  
+- GameMaster is controlled using slash commands.  Begin by typing '/' in a shared channel for more options.  
 - Current supported slash commands are /connect4, /connectfour, /rps, and /tictactoe
 
 ![](2022-11-08-22-49-36.png)
