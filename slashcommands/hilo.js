@@ -1,3 +1,4 @@
+const { MessageEmbed, Message} = require('discord.js')
 const run = async (client, interaction) => {
 
     const cardDeck = ["cardDeck/AD.png", "cardDeck/AC.png", "cardDeck/AH.png", "cardDeck/AS.png", "cardDeck/2D.png", "cardDeck/2C.png", "cardDeck/2H.png",
@@ -12,9 +13,33 @@ const run = async (client, interaction) => {
               "cardDeck/KD.png", "cardDeck/KC.png", "cardDeck/KH.png", "cardDeck/KS.png"];
 
 
-    const randomCard = cardDeck[Math.floor(Math.random() * cardDeck.length)];
+    const randomCard = getRandomCard(cardDeck);
 
-    return interaction.reply({ files: [{ attachment: randomCard }] }); ;
+    const embed = new MessageEmbed()
+        .setTitle("HiLo Card Game")
+        .setDescription("React with High or Low emoji to play the game!\n")
+        .setColor("#ffffff")
+        .addFields({ name: 'Cards remaining in deck', value: `${cardDeck.length}` })
+        .setTimestamp()
+
+    let msg = await interaction.reply({
+        embeds: [embed],
+        files: [{ attachment: cardDeck[randomCard] }],
+        fetchReply: true
+    });
+
+    // Returns random card and removes card from array
+    function getRandomCard(cardDeck) {
+        const index = Math.floor(Math.random() * cardDeck.length)
+        removeCard(cardDeck, index);
+        return index;
+    }
+    function removeCard(array, index) {
+        array.splice(index, 1)
+        console.log(index)
+    }
+
+    // return interaction.reply({ files: [{ attachment: randomC]ard } }); ;
 }
 
 
