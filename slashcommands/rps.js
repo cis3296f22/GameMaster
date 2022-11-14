@@ -1,7 +1,22 @@
 const { MessageEmbed, Message} = require('discord.js')
 const run = async (client, interaction) => {
+    
+    // Player choices for game
     const chooseArr = ["⛰️", "📰", "✂️"];  
-
+    // Calculates winner
+    function getResult(me, clientChosen) {
+        if ((me === "⛰️" && clientChosen === "✂️") ||
+            (me === "📰" && clientChosen === "⛰️") ||
+            (me === "✂️" && clientChosen === "📰")) {
+                return "You won!";
+                } else if (me === clientChosen) {
+                        return "It's a tie";
+                } else {
+                        return "You lost!";
+                }
+            }
+        
+    // Send embeded message to play RPS
     const embed = new MessageEmbed()
         .setTitle("Rock Paper Scissors")
         .setDescription("React with one of these emojis to play the game!\n" + chooseArr)
@@ -13,98 +28,36 @@ const run = async (client, interaction) => {
         embeds: [embed],
         fetchReply: true
     });
+    
+    // React to messages so player knows what emojis to use for RPS
+    await msg.react(chooseArr[0]);
+    await msg.react(chooseArr[1]);
+    await msg.react(chooseArr[2]);
 
-        await msg.react(chooseArr[0]);
-        await msg.react(chooseArr[1]);
-        await msg.react(chooseArr[2]);
+    const Filter = (reaction, user) =>  {reaction.emoji.name === "⛰️" && user.id === msg.author.id};
 
-    const rockFilter = (reaction, user) => reaction.emoji.name === chooseArr[0] && user.id === message.author.id;
-
-    const rock = msg.createReactionCollector(rockFilter, {time: 8000, dispose: true});
+    const collector = msg.createReactionCollector(Filter, {time: 8000, dispose: false});
 
 
-
-    rock.on("collect" , r => {
-        r.users.remove(msg.author.id);
+    // Collect reactions
+    collector.on("collect" , async (r, user) => {
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
 
-            
-        console.log(r.emoji.name);
+        // console.log(r.emoji.name);
         const result = getResult(r.emoji.name, botChoice);
 
-        console.log(result);
+        // console.log(result);
+
         const embed = new MessageEmbed()
             .setTitle(result)
             .setDescription(r.emoji.name + 'vs' + botChoice)
-
             msg.edit({ embeds: [embed] });
         })
 
-        function getResult(me, clientChosen) {
-            if ((me === "⛰️" && clientChosen === "✂️") ||
-                (me === "📰" && clientChosen === "⛰️") ||
-                (me === "✂️" && clientChosen === "📰")) {
-                    return "You won!";
-                    } else if (me === clientChosen) {
-                            return "It's a tie";
-                    } else {
-                            return "You lost!";
-                    }
-            }
-
-
-
-    
-
-
-
-    // const embed = new MessageEmbed()
-    //     .setTitle("Rock Paper Scissors")
-    //     .setDescription("Add a reaction to one of these emojies to play the game!\n" + chooseArr)
-    //     .setColor("#ffffff")
-    //     .setTimestamp()
-
-    //     // await message.channel.send(embed);
-    // let msg = await message.channel.send({embeds: [embed]});
-
-    
-
-    //     // await msg.react(chooseArr[0]);
-    //     // await msg.react(chooseArr[1]);
-    //     // await msg.react(chooseArr[2]);
-
-    // const rockFilter = (reaction, user) => reaction.emoji.name === chooseArr[0] && user.id === message.author.id;
-
-    // const rock = msg.createReactionCollector(rockFilter, {time: 8000, dispose: true});
-
-
-
-    // rock.on("collect" , r => {
-    //     r.users.remove(message.author.id);
-    //     const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
-
-            
-    //     console.log(r.emoji.name);
-    //     const result = getResult(r.emoji.name, botChoice);
-    //     console.log(result);
-    //     const embed = new MessageEmbed()
-    //         .setTitle(result)
-    //         .setDescription(r.emoji.name + 'vs' + botChoice);
-
-    //     msg.edit({ embeds: [embed] });
-    // })
-
-    // function getResult(me, clientChosen) {
-    //     if ((me === "⛰️" && clientChosen === "✂️") ||
-    //         (me === "📰" && clientChosen === "⛰️") ||
-    //         (me === "✂️" && clientChosen === "📰")) {
-    //             return "You won!";
-    //             } else if (me === clientChosen) {
-    //                     return "It's a tie";
-    //             } else {
-    //                     return "You lost!";
-    //             }
-    //     }
+    collector.on('end' , r => { 
+        
+        return;
+    });
 }
 
 module.exports = {
