@@ -36,11 +36,11 @@ const run = async (client, interaction) => {
 
     const Filter = (reaction, user) =>  {reaction.emoji.name === "⛰️" && user.id === msg.author.id};
 
-    const filter = msg.createReactionCollector(Filter, {time: 8000, dispose: false});
+    const collector = msg.createReactionCollector(Filter, {time: 8000, dispose: false});
 
 
     // Collect reactions
-    filter.on("collect" , async (r, user) => {
+    collector.on("collect" , async (r, user) => {
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
 
         // console.log(r.emoji.name);
@@ -54,7 +54,7 @@ const run = async (client, interaction) => {
             msg.edit({ embeds: [embed] });
         })
 
-    filter.on('end' , r => { 
+    collector.on('end' , r => { 
         
         return;
     });
