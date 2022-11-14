@@ -1,8 +1,9 @@
 const { MessageEmbed, Message} = require('discord.js')
 const run = async (client, interaction) => {
-
+    
+    // Player choices for game
     const chooseArr = ["⛰️", "📰", "✂️"];  
-
+    // Calculates winner
     function getResult(me, clientChosen) {
         if ((me === "⛰️" && clientChosen === "✂️") ||
             (me === "📰" && clientChosen === "⛰️") ||
@@ -15,6 +16,7 @@ const run = async (client, interaction) => {
                 }
             }
         
+    // Send embeded message to play RPS
     const embed = new MessageEmbed()
         .setTitle("Rock Paper Scissors")
         .setDescription("React with one of these emojis to play the game!\n" + chooseArr)
@@ -26,54 +28,37 @@ const run = async (client, interaction) => {
         embeds: [embed],
         fetchReply: true
     });
-        
-        await msg.react(chooseArr[0]);
-        await msg.react(chooseArr[1]);
-        await msg.react(chooseArr[2]);
+    
+    // React to messages so player knows what emojis to use for RPS
+    await msg.react(chooseArr[0]);
+    await msg.react(chooseArr[1]);
+    await msg.react(chooseArr[2]);
 
-    const rockFilter = (reaction, user) =>  {reaction.emoji.name === "⛰️" && user.id === msg.author.id};
+    const Filter = (reaction, user) =>  {reaction.emoji.name === "⛰️" && user.id === msg.author.id};
 
-    const rock = msg.createReactionCollector(rockFilter, {time: 8000, dispose: false});
+    const filter = msg.createReactionCollector(Filter, {time: 8000, dispose: false});
 
 
-
-    rock.on("collect" , async (r, user) => {
+    // Collect reactions
+    filter.on("collect" , async (r, user) => {
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
 
-        console.log(r.emoji.name);
+        // console.log(r.emoji.name);
         const result = getResult(r.emoji.name, botChoice);
 
-        console.log(result);
+        // console.log(result);
+
         const embed = new MessageEmbed()
             .setTitle(result)
             .setDescription(r.emoji.name + 'vs' + botChoice)
-            
-
             msg.edit({ embeds: [embed] });
         })
 
-
-
-
-        // await msg.reaction.clear();
-
-        // msg.reactions.removeAll()
-	    //     .catch(error => console.error('Failed to clear reactions:', error));
-
-        // msg.reactions.cache.get(r.emoji.name).remove()
-	    //     .catch(error => console.error('Failed to remove reactions:', error));
- 
-    
-
-    
-    rock.on('end' , rock => { 
+    filter.on('end' , r => { 
+        
         return;
     });
-    
-
 }
-
-
 
 module.exports = {
 	name: "rps",
