@@ -59,20 +59,6 @@ const run = async (client, interaction) => {
             .addFields({ name: 'Cards remaining in deck: ', value: 'No more cards'})
             msg.edit({ embeds: [embed] });
         }
-        
-        // if (cardDeck.length === 1) {
-        //     const embed = new MessageEmbed()
-        //     .addFields({ name: 'Cards remaining in deck', value: "No More Cards" })
-
-        //     msg.edit({ embeds: [embed]});
-        
-        // }
-        // else {
-        // const embed = new MessageEmbed()
-        //     .addFields({ name: 'Cards remaining in deck', value: `${newCardDeck.length}` })
-
-        //     msg.edit({ embeds: [embed], files: [{ attachment: newCardDeck[randomCard] }] });
-        // }
     })        
 
     collector.on('end' , r => { 
@@ -80,15 +66,13 @@ const run = async (client, interaction) => {
         return;
     });
 
-
-
-    // Returns random card and removes card from array
+    // Returns random card index
     function getRandomCard(cardDeck) {
         let index = Math.floor(Math.random() * cardDeck.length)
         return index;
     }
+    // Removes card from specified index
     function removeCard(cardDeck, index) {
-    
         cardDeck.splice(index, 1);
         console.log(index);
         return cardDeck;
