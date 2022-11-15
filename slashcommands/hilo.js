@@ -18,9 +18,10 @@ const run = async (client, interaction) => {
     let randomIndex = getRandomCard(cardDeck);
     let randomCard = cardDeck[randomIndex];
     cardDeck = removeCard(cardDeck, randomIndex);
-    let firstCard = getCardValue(randomCard);
-    console.log("First Card: ");
-    console.log(firstCard);
+    let firstCardValue = getCardValue(randomCard);
+    let firstCard = randomCard;
+    // console.log("First Card: ");
+    // console.log(firstCard);
     
 
     const embed = new MessageEmbed()
@@ -28,15 +29,17 @@ const run = async (client, interaction) => {
         .setDescription("React with High or Low emoji to play the game!\n")
         .setColor("#ffffff")
         .addFields({ name: 'Cards remaining in deck: ', value: `${cardDeck.length}` })
+        .addFields({ name: 'Card Value: ', value: `${firstCardValue}` })
         .setTimestamp()
 
     let msg = await interaction.reply({
         embeds: [embed],
-        files: [{ attachment: randomCard }],
+        files: [{ attachment: firstCard }],
         fetchReply: true
     });
     // removes await to see if message reaction happens on own still
-    await msg.react('🔼')
+    await msg.react('🔼');
+    await msg.react('🔽');
 
     // const filter = (reaction, user) => {reaction.emoji.name === '🔼' && user.id === msg.author.id};
     const filter = (reaction, user) => {reaction.emoji.name === '🔼'};
@@ -45,16 +48,64 @@ const run = async (client, interaction) => {
     const collector = msg.createReactionCollector(filter, {dispose: true});
 
     collector.on("collect" , async (r, user) => {
+        let hiClicked = false;
 
         console.log(r.emoji.name);
         randomIndex = getRandomCard(cardDeck);
         randomCard = cardDeck[randomIndex];
         cardDeck = removeCard(cardDeck, randomIndex);
         console.log(randomCard);
+        let secondCardValue = getCardValue(randomCard);
+        let result;
+        
+
+
+        // Check for Hi or Lo
+        if (r.emoji.name === '🔼') {
+            hiClicked = true;
+            console.log(firstCardValue);
+            console.log(secondCardValue);
+            if (firstCardValue < secondCardValue) {
+                // You Won
+                result = "You Won"
+            }
+            else if (firstCardValue === secondCardValue) {
+                // You pushed
+                result = "You Pushed"
+
+            }
+            else {
+                // You Lost
+                result = "You Lost"
+
+            }
+        
+        }
+        else if (r.emoji.name === '🔽') {
+            hiClicked = false;
+            console.log("Lo clicked");
+            console.log(firstCardValue);
+            console.log(secondCardValue);
+            if (firstCardValue < secondCardValue) {
+                // You lost
+                result = "You Lost"
+
+            }
+            else if (firstCardValue === secondCardValue) {
+                // You pushed
+                result = "You Pushed"
+
+            }
+            else {
+                // You Won
+                result = "You Won"
+            }
+        }
         // console.log(cardDeck);
         if (randomCard != undefined) {
             const lastCard = randomCard;
             const embed = new MessageEmbed()
+            .setDescription(result)
             .addFields({ name: 'Cards remaining in deck: ', value: `${cardDeck.length}`})
             msg.edit({ embeds: [embed], files: [{ attachment: randomCard }] });
         }
@@ -97,13 +148,51 @@ const run = async (client, interaction) => {
         if (value['2'] === undefined) {
             console.log("We don't have a 10");
             value = value['0'];
+            switch(value) {
+                case '2':
+                    value = 2;
+                    break;
+                case '3':
+                    value = 3;
+                    break;
+                case '4':
+                    value = 4;
+                    break;
+                case '5':
+                    value = 5;
+                    break;
+                case '6':
+                    value = 6;
+                    break;
+                case '7':
+                    value = 7;
+                    break;
+                case '8':
+                    value = 8;
+                    break;
+                case '9':
+                    value = 9;
+                    break;
+                case 'J':
+                    value = 11;
+                    break;
+                case 'Q':
+                    value = 12;
+                    break;
+                case 'K':
+                    value = 13;
+                    break;
+                case 'A':
+                    value = 14;
+                    break;
+                default:
+                  // code bloc
+            }
             return value;
         }
         // We have a 10
-        value = '10';
+        value = 10;
         return value;
-        
-
     }
 }
 
