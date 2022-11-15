@@ -38,7 +38,7 @@ const run = async (client, interaction) => {
     const Filter = (reaction, user) =>  {reaction.emoji.name === "⛰️" && user.id === msg.author.id};
 
     // Collect reactions for 5 minutes 
-    const collector = msg.createReactionCollector({ Filter, time: (.5 * 60000) });
+    const collector = msg.createReactionCollector({ Filter, time: (5 * 60000) });
 
 
     // Collect reactions
