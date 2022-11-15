@@ -56,6 +56,10 @@ const run = async (client, interaction) => {
         randomCard = cardDeck[randomIndex];
         cardDeck = removeCard(cardDeck, randomIndex);
         console.log(randomCard);
+        if (randomCard === undefined) {
+            console.log("End of Deck");
+            return;
+        }
         let secondCardValue = getCardValue(randomCard);
         let result;
         
@@ -150,6 +154,7 @@ const run = async (client, interaction) => {
     }
     // Parses string value to determine card value
     function getCardValue(card) {
+        // if (card === undefined) {return}
         let ar=card.split("/");
         ar = ar[1].split(".");
         // console.log(ar);
@@ -213,7 +218,7 @@ const run = async (client, interaction) => {
 }
 
 module.exports = {
-	name: "hilo",
+    name: "hilo",
     description: "HiLo Card Game",
     run
 }
