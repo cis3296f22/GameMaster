@@ -45,8 +45,8 @@ const run = async (client, interaction) => {
     // const filter = (reaction, user) => {reaction.emoji.name === '🔼' && user.id === msg.author.id};
     const filter = (reaction, user) => {reaction.emoji.name === '🔼'};
 
-    // Collects for 5 minutes
-    const collector = msg.createReactionCollector( filter, {time: (5 * 60000) });
+    // Collects for 5 minutes but not currently working.
+    const collector = msg.createReactionCollector( filter, {time: (.5 * 60000) });
 
     collector.on("collect" , async (r, user) => {
         let hiClicked;
@@ -148,7 +148,7 @@ const run = async (client, interaction) => {
         return cardDeck;
         
     }
-    // Parses array value to determine card value
+    // Parses string value to determine card value
     function getCardValue(card) {
         let ar=card.split("/");
         ar = ar[1].split(".");
@@ -211,7 +211,6 @@ const run = async (client, interaction) => {
         return value;
     }
 }
-
 
 module.exports = {
 	name: "hilo",
