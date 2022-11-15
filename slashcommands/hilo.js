@@ -48,7 +48,7 @@ const run = async (client, interaction) => {
     const collector = msg.createReactionCollector(filter, {dispose: true});
 
     collector.on("collect" , async (r, user) => {
-        let hiClicked = false;
+        let hiClicked;
 
         console.log(r.emoji.name);
         randomIndex = getRandomCard(cardDeck);
@@ -62,7 +62,7 @@ const run = async (client, interaction) => {
 
         // Check for Hi or Lo
         if (r.emoji.name === '🔼') {
-            hiClicked = true;
+            hiClicked = 'Hi';
             console.log(firstCardValue);
             console.log(secondCardValue);
             if (firstCardValue < secondCardValue) {
@@ -82,7 +82,7 @@ const run = async (client, interaction) => {
         
         }
         else if (r.emoji.name === '🔽') {
-            hiClicked = false;
+            hiClicked = 'Lo';
             console.log("Lo clicked");
             console.log(firstCardValue);
             console.log(secondCardValue);
@@ -106,14 +106,23 @@ const run = async (client, interaction) => {
             const lastCard = randomCard;
             const embed = new MessageEmbed()
             .setDescription(result)
+            .addFields({ name: 'You selected: ', value: `${hiClicked}`})
+            .addFields({ name: 'Card Values: ', value: `${firstCardValue} vs ${secondCardValue}`})
             .addFields({ name: 'Cards remaining in deck: ', value: `${cardDeck.length}`})
             msg.edit({ embeds: [embed], files: [{ attachment: randomCard }] });
         }
         else {
         const embed = new MessageEmbed()
+            .setDescription(result)
+            .addFields({ name: 'You selected: ', value: `${hiClicked}`})
+            .addFields({ name: 'Card Values: ', value: `${firstCardValue} vs ${secondCardValue}`})
             .addFields({ name: 'Cards remaining in deck: ', value: 'No more cards'})
             msg.edit({ embeds: [embed] });
+            return;
         }
+        // Set second card value to first card value
+        firstCardValue = secondCardValue;
+
     });        
 
     collector.on('end' , r => { 
