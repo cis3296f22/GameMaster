@@ -47,7 +47,7 @@ const run = async (client, interaction) => {
         randomCard = cardDeck[randomIndex];
         cardDeck = removeCard(cardDeck, randomIndex);
         console.log(randomCard);
-        console.log(cardDeck);
+        // console.log(cardDeck);
         if (randomCard != undefined) {
             const lastCard = randomCard;
             const embed = new MessageEmbed()
@@ -74,7 +74,7 @@ const run = async (client, interaction) => {
     // Removes card from specified index
     function removeCard(cardDeck, index) {
         cardDeck.splice(index, 1);
-        console.log(index);
+        // console.log(index);
         return cardDeck;
         
     }

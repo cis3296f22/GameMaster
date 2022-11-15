@@ -1,6 +1,6 @@
 const { MessageEmbed, Message} = require('discord.js')
 const run = async (client, interaction) => {
-    
+
     // Player choices for game
     const chooseArr = ["⛰️", "📰", "✂️"];  
     // Calculates winner
@@ -20,6 +20,7 @@ const run = async (client, interaction) => {
     const embed = new MessageEmbed()
         .setTitle("Rock Paper Scissors")
         .setDescription("React with one of these emojis to play the game!\n" + chooseArr)
+        .addFields({ name: 'Game active for ', value: '5 minutes' })
         .setColor("#ffffff")
         .setTimestamp()
 
@@ -36,7 +37,8 @@ const run = async (client, interaction) => {
 
     const Filter = (reaction, user) =>  {reaction.emoji.name === "⛰️" && user.id === msg.author.id};
 
-    const collector = msg.createReactionCollector(Filter, {time: 8000, dispose: false});
+    // Collect reactions for 5 minutes 
+    const collector = msg.createReactionCollector({ Filter, time: (5 * 60000) });
 
 
     // Collect reactions
@@ -52,11 +54,14 @@ const run = async (client, interaction) => {
             .setTitle(result)
             .setDescription(r.emoji.name + 'vs' + botChoice)
             msg.edit({ embeds: [embed] });
-        })
+        
+    });
 
     collector.on('end' , r => { 
-        
-        return;
+        const embed = new MessageEmbed()
+            .setTitle('Thank you for playing')
+            .setDescription('/rps to play again')
+            msg.edit({ embeds: [embed] });
     });
 }
 
