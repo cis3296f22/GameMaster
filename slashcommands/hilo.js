@@ -12,11 +12,15 @@ const run = async (client, interaction) => {
               "cardDeck/QH.png", "cardDeck/QS.png",
               "cardDeck/KD.png", "cardDeck/KC.png", "cardDeck/KH.png", "cardDeck/KS.png"];
 
-    // let cardDeck = ["cardDeck/AD.png", "cardDeck/AC.png", "cardDeck/AH.png", "cardDeck/AS.png"];
+    // let cardDeck = ["cardDeck/10D.png", "cardDeck/AC.png", "cardDeck/AH.png", "cardDeck/AS.png"];
+    // let cardDeck = ["cardDeck/10D.png", "cardDeck/9D.png"];
 
     let randomIndex = getRandomCard(cardDeck);
     let randomCard = cardDeck[randomIndex];
     cardDeck = removeCard(cardDeck, randomIndex);
+    let firstCard = getCardValue(randomCard);
+    console.log("First Card: ");
+    console.log(firstCard);
     
 
     const embed = new MessageEmbed()
@@ -59,10 +63,9 @@ const run = async (client, interaction) => {
             .addFields({ name: 'Cards remaining in deck: ', value: 'No more cards'})
             msg.edit({ embeds: [embed] });
         }
-    })        
+    });        
 
     collector.on('end' , r => { 
-        
         return;
     });
 
@@ -77,6 +80,30 @@ const run = async (client, interaction) => {
         // console.log(index);
         return cardDeck;
         
+    }
+    // Parses array value to determine card value
+    function getCardValue(card) {
+        let ar=card.split("/");
+        ar = ar[1].split(".");
+        // console.log(ar);
+        let value = ar[0].split();
+        value = value['0'];
+        
+        // console.log(value);
+        // console.log(value['0']);
+        // console.log(value['1']);
+        // console.log(value['2']);
+        // We don't have a 10
+        if (value['2'] === undefined) {
+            console.log("We don't have a 10");
+            value = value['0'];
+            return value;
+        }
+        // We have a 10
+        value = '10';
+        return value;
+        
+
     }
 }
 
