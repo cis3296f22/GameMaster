@@ -45,7 +45,7 @@ const run = async (client, interaction) => {
     const filter = (reaction, user) => {reaction.emoji.name === '🔼'};
 
     // Collects for 5 minutes
-    const collector = msg.createReactionCollector({ filter, time: (5 * 60000) });
+    const collector = msg.createReactionCollector( filter, {time: (5 * 60000) });
 
     collector.on("collect" , async (r, user) => {
         let hiClicked;
