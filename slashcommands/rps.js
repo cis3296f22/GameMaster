@@ -38,7 +38,7 @@ const run = async (client, interaction) => {
     const Filter = (reaction, user) =>  {reaction.emoji.name === "⛰️" && user.id === msg.author.id};
 
     // Collect reactions for 5 minutes 
-    const collector = msg.createReactionCollector({ Filter, time: (5 * 60000) });
+    const collector = msg.createReactionCollector({ Filter, time: (.5 * 60000) });
 
 
     // Collect reactions
@@ -59,7 +59,7 @@ const run = async (client, interaction) => {
 
     collector.on('end' , r => { 
         const embed = new MessageEmbed()
-            .setTitle('Thank you for playing')
+            .setTitle('Time is up. Thank you for playing')
             .setDescription('/rps to play again')
             msg.edit({ embeds: [embed] });
     });
