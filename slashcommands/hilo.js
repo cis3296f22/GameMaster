@@ -21,7 +21,7 @@ const run = async (client, interaction) => {
     let firstCardValue = getCardValue(randomCard);
     let firstCard = randomCard;
     // console.log("First Card: ");
-    // console.log(firstCard);
+    // console.log(firstCard);  
     
 
     const embed = new MessageEmbed()
@@ -44,8 +44,8 @@ const run = async (client, interaction) => {
     // const filter = (reaction, user) => {reaction.emoji.name === '🔼' && user.id === msg.author.id};
     const filter = (reaction, user) => {reaction.emoji.name === '🔼'};
 
-
-    const collector = msg.createReactionCollector(filter, {dispose: true});
+    // Collects for 5 minutes
+    const collector = msg.createReactionCollector({ filter, time: (5 * 60000) });
 
     collector.on("collect" , async (r, user) => {
         let hiClicked;
@@ -58,8 +58,6 @@ const run = async (client, interaction) => {
         let secondCardValue = getCardValue(randomCard);
         let result;
         
-
-
         // Check for Hi or Lo
         if (r.emoji.name === '🔼') {
             hiClicked = 'Hi';
