@@ -20,6 +20,7 @@ const run = async (client, interaction) => {
     cardDeck = removeCard(cardDeck, randomIndex);
     let firstCardValue = getCardValue(randomCard);
     let firstCard = randomCard;
+    let record = [0,0,0];
     // console.log("First Card: ");
     // console.log(firstCard);  
     
@@ -66,15 +67,18 @@ const run = async (client, interaction) => {
             if (firstCardValue < secondCardValue) {
                 // You Won
                 result = "You Won"
+                record[0] += 1;
             }
             else if (firstCardValue === secondCardValue) {
                 // You pushed
                 result = "You Pushed"
+                record[2] += 1;
 
             }
             else {
                 // You Lost
                 result = "You Lost"
+                record[1] += 1;
 
             }
         
@@ -87,16 +91,19 @@ const run = async (client, interaction) => {
             if (firstCardValue < secondCardValue) {
                 // You lost
                 result = "You Lost"
+                record[1] += 1;
 
             }
             else if (firstCardValue === secondCardValue) {
                 // You pushed
                 result = "You Pushed"
+                record[2] += 1;
 
             }
             else {
                 // You Won
                 result = "You Won"
+                record[0] += 1;
             }
         }
         // console.log(cardDeck);
@@ -107,6 +114,7 @@ const run = async (client, interaction) => {
             .addFields({ name: 'You selected: ', value: `${hiClicked}`})
             .addFields({ name: 'Card Values: ', value: `${firstCardValue} vs ${secondCardValue}`})
             .addFields({ name: 'Cards remaining in deck: ', value: `${cardDeck.length}`})
+            .addFields({ name: 'Current Record: ', value: `${record[0]} , ${record[1]} , ${record[2]}`})
             msg.edit({ embeds: [embed], files: [{ attachment: randomCard }] });
         }
         else {
@@ -114,6 +122,7 @@ const run = async (client, interaction) => {
             .setDescription(result)
             .addFields({ name: 'You selected: ', value: `${hiClicked}`})
             .addFields({ name: 'Card Values: ', value: `${firstCardValue} vs ${secondCardValue}`})
+            .addFields({ name: 'Final Record: ', value: `${record[0]} , ${record[1]} , ${record[2]}`})
             .addFields({ name: 'Cards remaining in deck: ', value: 'No more cards'})
             msg.edit({ embeds: [embed] });
             return;
