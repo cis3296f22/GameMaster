@@ -1,20 +1,21 @@
 const { MessageEmbed, Message} = require('discord.js')
 const run = async (client, interaction) => {
 
+
     // Player choices for game
     const chooseArr = ["⛰️", "📰", "✂️"];  
     // Calculates winner
-    function getResult(me, clientChosen) {
-        if ((me === "⛰️" && clientChosen === "✂️") ||
-            (me === "📰" && clientChosen === "⛰️") ||
-            (me === "✂️" && clientChosen === "📰")) {
-                return "You won!";
-                } else if (me === clientChosen) {
-                        return "It's a tie";
-                } else {
-                        return "You lost!";
-                }
-            }
+    // function getResult(me, clientChosen) {
+    //     if ((me === "⛰️" && clientChosen === "✂️") ||
+    //         (me === "📰" && clientChosen === "⛰️") ||
+    //         (me === "✂️" && clientChosen === "📰")) {
+    //             return "You won!";
+    //             } else if (me === clientChosen) {
+    //                     return "It's a tie";
+    //             } else {
+    //                     return "You lost!";
+    //             }
+    //         }
         
     // Send embeded message to play RPS
     const embed = new MessageEmbed()
@@ -65,8 +66,28 @@ const run = async (client, interaction) => {
     });
 }
 
+function getResult(me, clientChosen) {
+    if ((me === "⛰️" && clientChosen === "✂️") ||
+        (me === "📰" && clientChosen === "⛰️") ||
+        (me === "✂️" && clientChosen === "📰")) {
+            return "You won!";
+            } else if (me === clientChosen) {
+                    return "It's a tie";
+            } else {
+                    return "You lost!";
+            }
+        }
+
+
+// module.exports = {
+// 	name: "rps",
+//     description: "Rock Paper Scissors",
+//     run
+// }
+
 module.exports = {
-	name: "rps",
-    description: "Rock Paper Scissors",
-    run
-}
+    name: "rps",
+    description: "desc here",
+    run,
+    getResult
+  };
