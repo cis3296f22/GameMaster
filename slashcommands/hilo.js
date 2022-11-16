@@ -12,11 +12,17 @@ const run = async (client, interaction) => {
               "cardDeck/QH.png", "cardDeck/QS.png",
               "cardDeck/KD.png", "cardDeck/KC.png", "cardDeck/KH.png", "cardDeck/KS.png"];
 
-    // let cardDeck = ["cardDeck/AD.png", "cardDeck/AC.png", "cardDeck/AH.png", "cardDeck/AS.png"];
+    // let cardDeck = ["cardDeck/10D.png", "cardDeck/AC.png", "cardDeck/AH.png", "cardDeck/AS.png"];
+    // let cardDeck = ["cardDeck/10D.png", "cardDeck/9D.png"];
 
     let randomIndex = getRandomCard(cardDeck);
     let randomCard = cardDeck[randomIndex];
     cardDeck = removeCard(cardDeck, randomIndex);
+    let firstCardValue = getCardValue(randomCard);
+    let firstCard = randomCard;
+    let record = [0,0,0];
+    // console.log("First Card: ");
+    // console.log(firstCard);  
     
 
     const embed = new MessageEmbed()
@@ -24,45 +30,113 @@ const run = async (client, interaction) => {
         .setDescription("React with High or Low emoji to play the game!\n")
         .setColor("#ffffff")
         .addFields({ name: 'Cards remaining in deck: ', value: `${cardDeck.length}` })
+        .addFields({ name: 'Card Value: ', value: `${firstCardValue}` })
         .setTimestamp()
 
     let msg = await interaction.reply({
         embeds: [embed],
-        files: [{ attachment: randomCard }],
+        files: [{ attachment: firstCard }],
         fetchReply: true
     });
     // removes await to see if message reaction happens on own still
-    await msg.react('🔼')
+    await msg.react('🔼');
+    await msg.react('🔽');
 
     // const filter = (reaction, user) => {reaction.emoji.name === '🔼' && user.id === msg.author.id};
     const filter = (reaction, user) => {reaction.emoji.name === '🔼'};
 
-
-    const collector = msg.createReactionCollector(filter, {dispose: true});
+    // Collects for 5 minutes but not currently working.
+    const collector = msg.createReactionCollector( filter, {time: (.5 * 60000) });
 
     collector.on("collect" , async (r, user) => {
+        let hiClicked;
 
         console.log(r.emoji.name);
         randomIndex = getRandomCard(cardDeck);
         randomCard = cardDeck[randomIndex];
         cardDeck = removeCard(cardDeck, randomIndex);
         console.log(randomCard);
+        if (randomCard === undefined) {
+            console.log("End of Deck");
+            return;
+        }
+        let secondCardValue = getCardValue(randomCard);
+        let result;
+        
+        // Check for Hi or Lo
+        if (r.emoji.name === '🔼') {
+            hiClicked = 'Hi';
+            console.log(firstCardValue);
+            console.log(secondCardValue);
+            if (firstCardValue < secondCardValue) {
+                // You Won
+                result = "You Won"
+                record[0] += 1;
+            }
+            else if (firstCardValue === secondCardValue) {
+                // You pushed
+                result = "You Pushed"
+                record[2] += 1;
+
+            }
+            else {
+                // You Lost
+                result = "You Lost"
+                record[1] += 1;
+
+            }
+        
+        }
+        else if (r.emoji.name === '🔽') {
+            hiClicked = 'Lo';
+            console.log("Lo clicked");
+            console.log(firstCardValue);
+            console.log(secondCardValue);
+            if (firstCardValue < secondCardValue) {
+                // You lost
+                result = "You Lost"
+                record[1] += 1;
+
+            }
+            else if (firstCardValue === secondCardValue) {
+                // You pushed
+                result = "You Pushed"
+                record[2] += 1;
+
+            }
+            else {
+                // You Won
+                result = "You Won"
+                record[0] += 1;
+            }
+        }
         // console.log(cardDeck);
         if (randomCard != undefined) {
             const lastCard = randomCard;
             const embed = new MessageEmbed()
+            .setDescription(result)
+            .addFields({ name: 'You selected: ', value: `${hiClicked}`})
+            .addFields({ name: 'Card Values: ', value: `${firstCardValue} vs ${secondCardValue}`})
             .addFields({ name: 'Cards remaining in deck: ', value: `${cardDeck.length}`})
+            .addFields({ name: 'Current Record: ', value: `${record[0]} , ${record[1]} , ${record[2]}`})
             msg.edit({ embeds: [embed], files: [{ attachment: randomCard }] });
         }
         else {
         const embed = new MessageEmbed()
+            .setDescription(result)
+            .addFields({ name: 'You selected: ', value: `${hiClicked}`})
+            .addFields({ name: 'Card Values: ', value: `${firstCardValue} vs ${secondCardValue}`})
+            .addFields({ name: 'Final Record: ', value: `${record[0]} , ${record[1]} , ${record[2]}`})
             .addFields({ name: 'Cards remaining in deck: ', value: 'No more cards'})
             msg.edit({ embeds: [embed] });
+            return;
         }
-    })        
+        // Set second card value to first card value
+        firstCardValue = secondCardValue;
+
+    });        
 
     collector.on('end' , r => { 
-        
         return;
     });
 
@@ -78,11 +152,73 @@ const run = async (client, interaction) => {
         return cardDeck;
         
     }
+    // Parses string value to determine card value
+    function getCardValue(card) {
+        // if (card === undefined) {return}
+        let ar=card.split("/");
+        ar = ar[1].split(".");
+        // console.log(ar);
+        let value = ar[0].split();
+        value = value['0'];
+        
+        // console.log(value);
+        // console.log(value['0']);
+        // console.log(value['1']);
+        // console.log(value['2']);
+        // We don't have a 10
+        if (value['2'] === undefined) {
+            console.log("We don't have a 10");
+            value = value['0'];
+            switch(value) {
+                case '2':
+                    value = 2;
+                    break;
+                case '3':
+                    value = 3;
+                    break;
+                case '4':
+                    value = 4;
+                    break;
+                case '5':
+                    value = 5;
+                    break;
+                case '6':
+                    value = 6;
+                    break;
+                case '7':
+                    value = 7;
+                    break;
+                case '8':
+                    value = 8;
+                    break;
+                case '9':
+                    value = 9;
+                    break;
+                case 'J':
+                    value = 11;
+                    break;
+                case 'Q':
+                    value = 12;
+                    break;
+                case 'K':
+                    value = 13;
+                    break;
+                case 'A':
+                    value = 14;
+                    break;
+                default:
+                  // code bloc
+            }
+            return value;
+        }
+        // We have a 10
+        value = 10;
+        return value;
+    }
 }
 
-
 module.exports = {
-	name: "hilo",
+    name: "hilo",
     description: "HiLo Card Game",
     run
 }
