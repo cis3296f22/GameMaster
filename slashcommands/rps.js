@@ -1,22 +1,9 @@
 const { MessageEmbed, Message} = require('discord.js')
 const run = async (client, interaction) => {
 
-
     // Player choices for game
     const chooseArr = ["⛰️", "📰", "✂️"];  
-    // Calculates winner
-    // function getResult(me, clientChosen) {
-    //     if ((me === "⛰️" && clientChosen === "✂️") ||
-    //         (me === "📰" && clientChosen === "⛰️") ||
-    //         (me === "✂️" && clientChosen === "📰")) {
-    //             return "You won!";
-    //             } else if (me === clientChosen) {
-    //                     return "It's a tie";
-    //             } else {
-    //                     return "You lost!";
-    //             }
-    //         }
-        
+   
     // Send embeded message to play RPS
     const embed = new MessageEmbed()
         .setTitle("Rock Paper Scissors")
@@ -25,7 +12,6 @@ const run = async (client, interaction) => {
         .setColor("#ffffff")
         .setTimestamp()
 
-    // let msg = await message.channel.send({embeds: [embed]});
     let msg = await interaction.reply({
         embeds: [embed],
         fetchReply: true
@@ -35,6 +21,16 @@ const run = async (client, interaction) => {
     await msg.react(chooseArr[0]);
     await msg.react(chooseArr[1]);
     await msg.react(chooseArr[2]);
+
+    // Ensures reaction is not collected when player hasn't selected emoji
+    await new Promise((resolve, reject) => {
+        // console.log("sleeping for 2 second...")
+        setTimeout(()   => {
+            resolve()
+                // console.log("Woke up");
+            
+        }, 2000);
+    })
 
     const Filter = (reaction, user) =>  {reaction.emoji.name === "⛰️" && user.id === msg.author.id};
 
@@ -65,7 +61,7 @@ const run = async (client, interaction) => {
             msg.edit({ embeds: [embed] });
     });
 }
-
+// Calculates winner
 function getResult(me, clientChosen) {
     if ((me === "⛰️" && clientChosen === "✂️") ||
         (me === "📰" && clientChosen === "⛰️") ||
@@ -78,16 +74,9 @@ function getResult(me, clientChosen) {
             }
         }
 
-
-// module.exports = {
-// 	name: "rps",
-//     description: "Rock Paper Scissors",
-//     run
-// }
-
 module.exports = {
     name: "rps",
     description: "desc here",
     run,
     getResult
-  };
+}
