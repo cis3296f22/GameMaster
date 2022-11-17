@@ -41,6 +41,16 @@ const run = async (client, interaction) => {
     // removes await to see if message reaction happens on own still
     await msg.react('🔼');
     await msg.react('🔽');
+    // Testing to make sure reaction isn't collected before player selects emoji
+
+    await new Promise((resolve, reject) => {
+        // console.log("sleeping for 2 second...")
+        setTimeout(()   => {
+            resolve()
+                // console.log("Woke up");
+            
+        }, 2000);
+    })
 
     // const filter = (reaction, user) => {reaction.emoji.name === '🔼' && user.id === msg.author.id};
     const filter = (reaction, user) => {reaction.emoji.name === '🔼'};
@@ -138,87 +148,89 @@ const run = async (client, interaction) => {
 
     collector.on('end' , r => { 
         return;
-    });
-
-    // Returns random card index
-    function getRandomCard(cardDeck) {
-        let index = Math.floor(Math.random() * cardDeck.length)
-        return index;
-    }
-    // Removes card from specified index
-    function removeCard(cardDeck, index) {
-        cardDeck.splice(index, 1);
-        // console.log(index);
-        return cardDeck;
-        
-    }
-    // Parses string value to determine card value
-    function getCardValue(card) {
-        // if (card === undefined) {return}
-        let ar=card.split("/");
-        ar = ar[1].split(".");
-        // console.log(ar);
-        let value = ar[0].split();
+    });   
+}
+// Returns random card index
+function getRandomCard(cardDeck) {
+    let index = Math.floor(Math.random() * cardDeck.length)
+    return index;
+}
+// Removes card from specified index
+function removeCard(cardDeck, index) {
+    cardDeck.splice(index, 1);
+    // console.log(index);
+    return cardDeck;
+    
+}
+// Parses string value to determine card value
+function getCardValue(card) {
+    // if (card === undefined) {return}
+    let ar=card.split("/");
+    ar = ar[1].split(".");
+    // console.log(ar);
+    let value = ar[0].split();
+    value = value['0'];
+    
+    // console.log(value);
+    // console.log(value['0']);
+    // console.log(value['1']);
+    // console.log(value['2']);
+    // We don't have a 10
+    if (value['2'] === undefined) {
+        console.log("We don't have a 10");
         value = value['0'];
-        
-        // console.log(value);
-        // console.log(value['0']);
-        // console.log(value['1']);
-        // console.log(value['2']);
-        // We don't have a 10
-        if (value['2'] === undefined) {
-            console.log("We don't have a 10");
-            value = value['0'];
-            switch(value) {
-                case '2':
-                    value = 2;
-                    break;
-                case '3':
-                    value = 3;
-                    break;
-                case '4':
-                    value = 4;
-                    break;
-                case '5':
-                    value = 5;
-                    break;
-                case '6':
-                    value = 6;
-                    break;
-                case '7':
-                    value = 7;
-                    break;
-                case '8':
-                    value = 8;
-                    break;
-                case '9':
-                    value = 9;
-                    break;
-                case 'J':
-                    value = 11;
-                    break;
-                case 'Q':
-                    value = 12;
-                    break;
-                case 'K':
-                    value = 13;
-                    break;
-                case 'A':
-                    value = 14;
-                    break;
-                default:
-                  // code bloc
-            }
-            return value;
+        switch(value) {
+            case '2':
+                value = 2;
+                break;
+            case '3':
+                value = 3;
+                break;
+            case '4':
+                value = 4;
+                break;
+            case '5':
+                value = 5;
+                break;
+            case '6':
+                value = 6;
+                break;
+            case '7':
+                value = 7;
+                break;
+            case '8':
+                value = 8;
+                break;
+            case '9':
+                value = 9;
+                break;
+            case 'J':
+                value = 11;
+                break;
+            case 'Q':
+                value = 12;
+                break;
+            case 'K':
+                value = 13;
+                break;
+            case 'A':
+                value = 14;
+                break;
+            default:
+              // code bloc
         }
-        // We have a 10
-        value = 10;
         return value;
     }
+    // We have a 10
+    value = 10;
+    return value;
 }
 
 module.exports = {
     name: "hilo",
     description: "HiLo Card Game",
-    run
+    run,
+    getRandomCard,
+    removeCard,
+    getCardValue
 }
