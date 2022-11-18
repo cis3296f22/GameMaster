@@ -12,11 +12,11 @@ const TOKEN = process.env.TOKEN;
 const GUILDID = process.env.GUILDID;
 
 const client = new Discord.Client({
-  intents: [
-    Discord.Intents.FLAGS.GUILDS,
-    Discord.Intents.FLAGS.GUILD_MESSAGES,
-    Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS
-  ],
+    intents: [
+        Discord.Intents.FLAGS.GUILDS,
+        Discord.Intents.FLAGS.GUILD_MESSAGES,
+        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+    ],
 });
 // const game = new TicTacToe({ language: 'en', commandOptionName: 'user' });
 
@@ -34,10 +34,10 @@ client.on('ready', () => {
                     description: "Mention the User",
                     required: false
                 }
-            ]            
+            ]
         },
         GUILDID,
-    console.log("Command: -tictacttoe registered")
+        console.log("Command: -tictacttoe registered")
     );
     client.application.commands.create(
         {
@@ -50,10 +50,10 @@ client.on('ready', () => {
                     description: "Mention the User",
                     required: false
                 }
-            ]            
+            ]
         },
         GUILDID,
-    console.log("Command: -connectfour registered")
+        console.log("Command: -connectfour registered")
     );
     client.application.commands.create(
         {
@@ -69,9 +69,17 @@ client.on('ready', () => {
             // ]            
         },
         GUILDID,
-    console.log("Command: -rockpaperscissors registered")
+        console.log("Command: -rockpaperscissors registered")
     );
-client.on('interactionCreate', async interaction => {
+    client.application.commands.create(
+        {
+            name: 'blackjack',
+            description: 'Play Blackjack',
+        },
+        GUILDID,
+        console.log("Command: -blackjack registered")
+    );
+    client.on('interactionCreate', async interaction => {
         if (interaction instanceof Discord.CommandInteraction && interaction.commandName === 'tictactoe') {
             console.log("Received: -tictacttoe from user")
             const game = new TicTacToe({ language: 'en', commandOptionName: 'user' });
@@ -79,6 +87,11 @@ client.on('interactionCreate', async interaction => {
         }
         if (interaction instanceof Discord.CommandInteraction && interaction.commandName === 'connectfour') {
             console.log("Received: -connectfour from user")
+            const game = new Connect4({ language: 'en', commandOptionName: 'user' });
+            game.handleInteraction(interaction);
+        }
+        if (interaction instanceof Discord.CommandInteraction && interaction.commandName === 'blackjack') {
+            console.log("Received: -blackjack from user")
             const game = new Connect4({ language: 'en', commandOptionName: 'user' });
             game.handleInteraction(interaction);
         }
@@ -109,7 +122,7 @@ client.on('interactionCreate', async interaction => {
             //     r.users.remove(msg.author.id);
             //     const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
 
-                    
+
             //     console.log(r.emoji.name);
             //     const result = getResult(r.emoji.name, botChoice);
             //     console.log(result);
@@ -131,7 +144,7 @@ client.on('interactionCreate', async interaction => {
             //                         return "You lost!";
             //                 }
             //         }
-        }              
+        }
     });
 });
 
