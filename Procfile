@@ -1,1 +1,1 @@
-Worker: node ./index.js & node ./indexOLD.js & node ./loadslash.js 
+Worker: node ./loadslash.js & node ./index.js
