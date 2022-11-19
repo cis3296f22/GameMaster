@@ -1,8 +1,11 @@
 const { MessageEmbed, Message} = require('discord.js')
+
 const run = async (client, interaction) => {
 
     // Player choices for game
     const chooseArr = ["⛰️", "📰", "✂️"];  
+    // Record tracker
+    let record = [0,0,0];
    
     // Send embeded message to play RPS
     const embed = new MessageEmbed()
@@ -24,10 +27,8 @@ const run = async (client, interaction) => {
 
     // Ensures reaction is not collected when player hasn't selected emoji
     await new Promise((resolve, reject) => {
-        // console.log("sleeping for 2 second...")
         setTimeout(()   => {
             resolve()
-                // console.log("Woke up");
             
         }, 2000);
     })
@@ -38,27 +39,37 @@ const run = async (client, interaction) => {
     const collector = msg.createReactionCollector({ Filter, time: (5 * 60000) });
 
 
-    // Collect reactions
+    // Collect reactions and edit embed
     collector.on("collect" , async (r, user) => {
+        
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
-
-        // console.log(r.emoji.name);
         const result = getResult(r.emoji.name, botChoice);
 
-        // console.log(result);
+        if (result === "You won!") {
+            record[0] += 1;
+        }
+        else if (result === "You lost!") {
+            record[1] += 1;
+        }
+        else {
+            record[2] += 1;
+        }
 
         const embed = new MessageEmbed()
             .setTitle(result)
             .setDescription(r.emoji.name + 'vs' + botChoice)
+            .addFields({ name: 'Current Record: ', value: `${record[0]} , ${record[1]} , ${record[2]}`})
             msg.edit({ embeds: [embed] });
         
     });
-
+    // Collection is over send embed
     collector.on('end' , r => { 
         const embed = new MessageEmbed()
             .setTitle('Time is up. Thank you for playing')
             .setDescription('/rps to play again')
+            .addFields({ name: 'Final Record: ', value: `${record[0]} , ${record[1]} , ${record[2]}`})
             msg.edit({ embeds: [embed] });
+        return;
     });
 }
 // Calculates winner
