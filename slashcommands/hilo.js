@@ -51,7 +51,7 @@ const run = async (client, interaction) => {
     const Filter = (reaction, user) => {reaction.emoji.name === '🔼' && user.id === msg.author.id};
 
     // Collects reactions for 10 minutes
-    const collector = msg.createReactionCollector({ Filter, time: (5 * 60000) });
+    const collector = msg.createReactionCollector({ Filter, time: (10 * 60000) });
 
     // Collect reactions and edit embed
     collector.on("collect" , async (r, user) => {
