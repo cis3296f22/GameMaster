@@ -33,9 +33,5 @@ client.on("interactionCreate", (interaction) => {
     slashcmd.run(client, interaction)
 })
 
-function sum(a, b) {
-    return a + b;
-  }
-  module.exports = sum;
 
 client.login(process.env.TOKEN)
