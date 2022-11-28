@@ -3,18 +3,23 @@
 sequenceDiagram
   
     participant GameMaster as GameMaster
+    participant Discord as Discord
     participant PlayerOne as PlayerOne
     participant PlayerTwo as PlayerTwo
     participant TicTacToeBot as TicTacToeBot
     
-    Note left of GameMaster: Bot is running on Heroku
+    PlayerOne->>+Discord: /tictactoe PlayerTwo
     Note left of PlayerOne: PlayerOne types slash command in server to challenge PlayerTwo to a tictactoe game
-    PlayerOne-->>+GameMaster: /tictactoe PlayerTwo
+    Discord->>+GameMaster: Deploy slash command file
+    Note left of GameMaster: Bot is running on Heroku
     GameMaster->>-TicTacToeBot: Created Game Objects
     Note left of GameMaster: GameObjects include TicTacToe, EventHandler, and TicTacToeBot objects
-    GameMaster->>+PlayerTwo: PlayerOne Duel Challenge
-    PlayerTwo-->>-GameMaster: Duel Accepted: challengeAnswered()
-    GameMaster->>+PlayerOne: PlayerTwo has Accepted Duel
+    GameMaster->>+Discord: PlayerOne Duel Challenge
+    Discord->>+PlayerTwo: PlayerOne Duel Challenge
+    PlayerTwo-->>-Discord: Duel Accepted: challengeAnswered()
+    Discord->>GameMaster: Duel Accepted: challengeAnswered()
+    GameMaster->>+Discord: PlayerTwo has Accepted Duel.
+    Discord->>+PlayerOne: PlayerTwo has Accepted Duel
     loop COLLECT MESSAGES
     Note left of PlayerOne: Player is chosen at random to make the first move in the game
     TicTacToeBot->>+PlayerOne: Listen for move
