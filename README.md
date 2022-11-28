@@ -1,22 +1,24 @@
 # GameMaster (Games with Friends!)
 GameMaster is a discord bot that allows users to play smaller board games such as Tic Tac Toe, Rock-Paper-Scissors and Connect Four. The goal of GameMaster is to provide a hub where users can play multiple games with friends using Discord. Users can customize settings to their liking for an optimal experience.  
 
-![](2022-11-08-22-44-48.png)
+![](images\2022-11-08-22-44-48.png)
 
 # How to add the bot to your server
+
+
 
 - Click the invite Link: https://discord.com/api/oauth2/authorize?client_id=1032689897573732483&permissions=8&scope=bot%20applications.commands
 - Use the dropdown to select the server you would like to add GameMaster in.
 - Click 'Continue'
 
-![](2022-11-08-22-45-24.png)
+![](images\2022-11-08-22-45-24.png)
 
 # How to use GameMaster in your server
 
 - GameMaster is controlled using slash commands.  Begin by typing '/' in a shared channel for more options.  
 - Current supported slash commands are /connect4, /connectfour, /rps, and /tictactoe
 
-![](2022-11-08-22-49-36.png)
+![](images\2022-11-08-22-49-36.png)
 
 # How to contribute
 
