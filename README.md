@@ -11,7 +11,7 @@ GameMaster is a discord bot that allows users to play smaller board games such a
 - Use the dropdown to select the server you would like to add GameMaster in.
 - Click 'Continue'
 
-![](images\2022-11-08-22-45-24.png)
+![](images/2022-11-08-22-45-24.png)
 
 # How to use GameMaster in your server
 
