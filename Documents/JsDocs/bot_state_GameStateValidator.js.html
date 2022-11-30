@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: bot/state/GameStateValidator.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: bot/state/GameStateValidator.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/**@class */
+class GameStateValidator {
+    constructor(manager) {
+        this.manager = manager;
+    }
+    get config() {
+        return this.manager.bot.configuration;
+    }
+    get cooldownEndTimes() {
+        return this.manager.memberCooldownEndTimes;
+    }
+    /**
+     * @method
+     * @param {any} tunnel
+     */
+    isInteractionValid(tunnel) {
+        return this.isMessagingAllowed(tunnel) &amp;&amp; this.isMemberAllowed(tunnel.author);
+    }
+    /**
+     * @method
+     * @param {any} tunnel
+     * @param {any} invited
+     */
+    isNewGamePossible(tunnel, invited) {
+        return (!this.manager.gameboards.some(gameboard => [tunnel.author, invited].some(entity => entity &amp;&amp; gameboard.entities.includes(entity))) &amp;&amp;
+            (this.config.simultaneousGames ||
+                !this.manager.gameboards.some(gameboard => gameboard.tunnel.channel === tunnel.channel)));
+    }
+    /**
+     * @method
+     * @param {any} tunnel
+     */
+    isMessagingAllowed(tunnel) {
+        return (this.hasPermissionsInChannel(tunnel) &amp;&amp;
+            (!this.config.allowedChannelIds ||
+                this.config.allowedChannelIds.length === 0 ||
+                this.config.allowedChannelIds.includes(tunnel.channel.id)));
+    }
+    /**
+     * @method
+     * @param {any} tunnel
+     */
+    hasPermissionsInChannel(tunnel) {
+        var _a, _b, _c;
+        const allowed = (_c = (_b = (_a = tunnel.channel.guild.me) === null || _a === void 0 ? void 0 : _a.permissionsIn(tunnel.channel)) === null || _b === void 0 ? void 0 : _b.has(GameStateValidator.PERM_LIST)) !== null &amp;&amp; _c !== void 0 ? _c : false;
+        if (!allowed) {
+            console.error(`Cannot operate because of a lack of permissions in the channel #${tunnel.channel.name}`);
+        }
+        return allowed;
+    }
+    /**
+     * @method
+     * @param {any} member
+     */
+    isMemberAllowed(member) {
+        return this.isMemberAllowedByRole(member) &amp;&amp; this.isMemberAllowedByCooldown(member);
+    }
+    /**
+     * @method
+     * @param {any} member
+     */
+    isMemberAllowedByRole(member) {
+        return (!this.config.allowedRoleIds ||
+            this.config.allowedRoleIds.length == 0 ||
+            member.permissions.has('ADMINISTRATOR') ||
+            member.roles.cache.some(role => this.config.allowedRoleIds.includes(role.id)));
+    }
+    /**
+     * @method
+     * @param {any} member
+     */
+    isMemberAllowedByCooldown(member) {
+        return (!this.config.requestCooldownTime ||
+            this.config.requestCooldownTime === 0 ||
+            !this.cooldownEndTimes.has(member.id) ||
+            this.cooldownEndTimes.get(member.id) &lt; Date.now());
+    }
+}
+exports.default = GameStateValidator;
+GameStateValidator.PERM_LIST = [
+    'ADD_REACTIONS',
+    'READ_MESSAGE_HISTORY',
+    'SEND_MESSAGES',
+    'VIEW_CHANNEL'
+];
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AI.html">AI</a></li><li><a href="AppCommandRegister.html">AppCommandRegister</a></li><li><a href="CommandInteractionMessagingTunnel.html">CommandInteractionMessagingTunnel</a></li><li><a href="ComponentInteractionMessagingTunnel.html">ComponentInteractionMessagingTunnel</a></li><li><a href="ConfigProvider.html">ConfigProvider</a></li><li><a href="DuelRequest.html">DuelRequest</a></li><li><a href="EventHandler.html">EventHandler</a></li><li><a href="Game.html">Game</a></li><li><a href="GameBoard.html">GameBoard</a></li><li><a href="GameBoardBuilder.html">GameBoardBuilder</a></li><li><a href="GameBoardButtonBuilder.html">GameBoardButtonBuilder</a></li><li><a href="GameCommand.html">GameCommand</a></li><li><a href="GameStateManager.html">GameStateManager</a></li><li><a href="GameStateValidator.html">GameStateValidator</a></li><li><a href="I18nProvider.html">I18nProvider</a></li><li><a href="MessagingTunnel.html">MessagingTunnel</a></li><li><a href="TextMessagingTunnel.html">TextMessagingTunnel</a></li><li><a href="TicTacToe.html">TicTacToe</a></li><li><a href="TicTacToeBot.html">TicTacToeBot</a></li><li><a href="optional.html">optional</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getOpponent">getOpponent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Wed Nov 30 2022 00:09:12 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: tictactoe/Game.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: tictactoe/Game.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Player = require("./Player");
+/**
+ * @class The Game class creates the board, keeps track of the current player, and determines a winner.
+ */
+class Game {
+    //In accordance with the licensing, there was a change to the constructor to allow for custom sizing that was not previously present.
+    /**
+     * @constructs
+     * @param {any} boardSize
+     */
+    constructor(boardSize) {
+        this._boardSize = boardSize;
+        this._board = [];
+        this._winner = 0;
+        this._currentPlayer = Math.random() &lt; 0.5 ? 1 : 2;
+        for (let i = 0; i &lt; boardSize * boardSize; i++) {
+            this._board[i] = 0;
+        }
+    }
+    get boardSize() {
+        return this._boardSize;
+    }
+    get board() {
+        return this._board;
+    }
+    get finished() {
+        return this.winner !== 0 || this.boardFull;
+    }
+    get currentPlayer() {
+        return this._currentPlayer;
+    }
+    get winner() {
+        return this._winner;
+    }
+    get boardFull() {
+        return this.board.every(cell => cell !== 0);
+    }
+    get boardEmpty() {
+        return this.board.every(cell => cell === 0);
+    }
+    get emptyCellAmount() {
+        return this.board.filter(cell => cell === 0).length;
+    }
+    /**
+     * @method 
+     * @description creates a copy of the game for the purpose of allowing for recursive searching within the game itself.
+     * @returns the cloned copy of the game
+     */
+    clone() {
+        const game = new Game(this.boardSize);
+        for (let i = 0; i &lt; this.board.length; i++) {
+            game.board[i] = this.board[i];
+        }
+        return game;
+    }
+    /**
+     * @method
+     * @description checks to ensure the position chosen is valid.
+     * @param {any} position The location being determined as valid or valid
+     * @returns boolean stating whether move is valid.
+     */
+    isMoveValid(position) {
+        return position &lt; this.board.length &amp;&amp; this.board[position] === 0;
+    }
+    /**
+     * @method
+     * @description adds the player's move to the board, and checks for a winner
+     * @param {any} player The player who's turn it is
+     * @param {any} position The location being added to the board
+     */
+    updateBoard(player, position) {
+        this.board[position] = player;
+        this._winner = this.computeWinner();
+    }
+    /**
+     * @method 
+     * @description Changes the active player's turn
+     */
+    nextPlayer() {
+        this._currentPlayer = (0, Player.getOpponent)(this.currentPlayer);
+    }
+    /**
+     * @method 
+     * @description finds a winner if there is one
+     * @returns a winner, if any.
+     */
+    computeWinner() {
+        var isFound = false;
+        var values = new Array(this.boardSize);
+        //compute winner by populating each row and column, then checking for rows
+        for (let i = 0; i &lt; this.boardSize; i++) {
+            //set isFound to true and then see if it is made false during the check
+            isFound = true;
+            for (let j = 0; j &lt; this.boardSize; j++) {
+                values[j] = this.toIndex(i, j);
+            }
+
+            //The check to determine if winner has been found
+            for (let j = 0; j &lt; this.boardSize - 1; j++) {
+                if (!this.validEquals(values[j], values[j + 1])) {
+                    isFound = false;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                return this.board[values[0]];
+            }
+        }
+
+        for (let i = 0; i &lt; this.boardSize; i++) {
+            //set isFound to true and then see if it is made false during the check
+            isFound = true;
+            for (let j = 0; j &lt; this.boardSize; j++) {
+                values[j] = this.toIndex(j, i);
+            }
+
+            //The check to determine if winner has been found
+            for (let j = 0; j &lt; this.boardSize - 1; j++) {
+                if (!this.validEquals(values[j], values[j + 1])) {
+                    isFound = false;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                return this.board[values[0]];
+            }
+        }
+
+        //top left to bottom right check
+        isFound = true;
+        for (let i = 0; i &lt; this.boardSize; i++) {
+            values[i] = this.toIndex(i, i);
+        }
+
+        for (let i = 0; i &lt; this.boardSize - 1; i++) {
+            if (!this.validEquals(values[i], values[i + 1])) {
+                isFound = false;
+                break;
+            }
+        }
+        if (isFound) {
+            return this.board[values[0]];
+        }
+
+        //top right to bottom left check
+        isFound = true;
+        for (let i = 0; i &lt; this.boardSize; i++) {
+            values[i] = this.toIndex(i, this.boardSize-1-i);
+        }
+
+        for (let i = 0; i &lt; this.boardSize - 1; i++) {
+            if (!this.validEquals(values[i], values[i + 1])) {
+                isFound = false;
+                break;
+            }
+        }
+        if (isFound) {
+            return this.board[values[0]];
+        }
+        return 0;
+    }
+    /**
+     * @method 
+     * @description Converts 2D representation to single array index
+     * @param {any} row row index
+     * @param {any} column column index
+     * @returns index representing the location of interest.
+     */
+    toIndex(row, column) {
+        return row * this.boardSize + column;
+    }
+    /**
+     * @method 
+     * @description Determines if position1 and position2 are equal to each other
+     * @param {any} position1 First position of interest
+     * @param {any} position2 Second position of interest
+     * @returns boolean determining whether they're equal
+     */
+    validEquals(position1, position2) {
+        return (this.board[position1] !== 0 &amp;&amp; this.board[position1] === this.board[position2]);
+    }
+}
+exports.default = Game;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AI.html">AI</a></li><li><a href="AppCommandRegister.html">AppCommandRegister</a></li><li><a href="CommandInteractionMessagingTunnel.html">CommandInteractionMessagingTunnel</a></li><li><a href="ComponentInteractionMessagingTunnel.html">ComponentInteractionMessagingTunnel</a></li><li><a href="ConfigProvider.html">ConfigProvider</a></li><li><a href="DuelRequest.html">DuelRequest</a></li><li><a href="EventHandler.html">EventHandler</a></li><li><a href="Game.html">Game</a></li><li><a href="GameBoard.html">GameBoard</a></li><li><a href="GameBoardBuilder.html">GameBoardBuilder</a></li><li><a href="GameBoardButtonBuilder.html">GameBoardButtonBuilder</a></li><li><a href="GameCommand.html">GameCommand</a></li><li><a href="GameStateManager.html">GameStateManager</a></li><li><a href="GameStateValidator.html">GameStateValidator</a></li><li><a href="I18nProvider.html">I18nProvider</a></li><li><a href="MessagingTunnel.html">MessagingTunnel</a></li><li><a href="TextMessagingTunnel.html">TextMessagingTunnel</a></li><li><a href="TicTacToe.html">TicTacToe</a></li><li><a href="TicTacToeBot.html">TicTacToeBot</a></li><li><a href="optional.html">optional</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getOpponent">getOpponent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Wed Nov 30 2022 00:09:12 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
