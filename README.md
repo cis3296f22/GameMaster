@@ -1,23 +1,28 @@
 # GameMaster (Games with Friends!)
-GameMaster is a discord bot that allows users to play smaller board games such as Tic Tac Toe (and hopefully connect four). The goal of GameMaster is to provide a hub where users can play multiple games with friends using Discord. User's can customize settings to their liking for an optimal experience.
+GameMaster is a discord bot that allows users to play smaller board games such as Tic Tac Toe, Rock-Paper-Scissors and Connect Four. The goal of GameMaster is to provide a hub where users can play multiple games with friends using Discord. Users can customize settings to their liking for an optimal experience.  
 
-<img src="https://discordapp.com/api/guilds/1032390183271813221/widget.png?style=banner3" alt="Discord Banner 3"/>
-
-
-
-Put here a short paragraph describing your project. 
-Adding an screenshot or a mockup of your application in action would be nice.  
-
+![](images/2022-11-08-22-44-48.png)
 
 # How to add the bot to your server
 
+
+
 - Click the invite Link: https://discord.com/api/oauth2/authorize?client_id=1032689897573732483&permissions=8&scope=bot%20applications.commands
-
 - Use the dropdown to select the server you would like to add GameMaster in.
-
 - Click 'Continue'
 
+![](images/2022-11-08-22-45-24.png)
+
+# How to use GameMaster in your server
+
+- GameMaster is controlled using slash commands.  Begin by typing '/' in a shared channel for more options.  
+- Current supported slash commands are /connect4, /connectfour, /rps, and /tictactoe
+
+![](images/2022-11-08-22-49-36.png)
+
 # How to contribute
+
+- If you would like to use our open source project in your own project, you will need to create a .env file with the Token.  Please contact us for more information! 
 
 ### How to build and Run
 
@@ -44,10 +49,9 @@ Now you need to put your bot token in a `.env` file. In the project directory cr
 TOKEN=<TOKEN>
 GUILD=<GUILD ID>
 ```
-Start the bot with `node index.js` OR `nodemon index.js` depending on what you downloaded prior and the bot will be online!
 
-You now need to deploy the slash commands. Use the `?deploy` command to deploy all of the commands to Discord.
+#### Start bot server on local machine:
+-Start the bot with `node index.js` OR `nodemon index.js` depending on what you downloaded prior and the bot will be online!
 
-Now you can do `/ping` and should get a response!
-
-To start a tic tac toe game, type `/ttt` and click the buttons!
+#### Starting bot server on heroku:
+-Please see (heroku_instructions_for_deploy.docx)

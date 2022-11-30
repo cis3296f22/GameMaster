@@ -1,4 +1,5 @@
 const Discord = require("discord.js")
+const { MessageEmbed } = require('discord.js')
 
 require("dotenv").config()
 
@@ -9,6 +10,21 @@ const client = new Discord.Client({
 let bot = {
     client
 }
+// Greetings message to new servers
+const embed = new MessageEmbed()
+        .setTitle("GameMaster")
+        .setDescription("Thank you for inviting me to the server!!\nTo play a game use a slash command.\nHere are a list of my slash commands:")
+        .setColor("#ffffff")
+        .addFields({ name: 'TicTacToe', value: '/tictactoe' })
+        .addFields({ name: 'Rock Paper Scisscors', value: '/rps' })
+        .addFields({ name: 'HiLo Card Game', value: '/hilo' })
+        .setTimestamp()
+
+  
+client.on('guildCreate', (g) => {
+    const channel = g.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(g.me).has('SEND_MESSAGES'))
+    channel.send({ embeds: [embed] })
+})
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`)
@@ -32,5 +48,6 @@ client.on("interactionCreate", (interaction) => {
 
     slashcmd.run(client, interaction)
 })
+
 
 client.login(process.env.TOKEN)
