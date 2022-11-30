@@ -1,7 +1,7 @@
 const TicTacToe = require('discord-tictactoe');
 
 const run = async (client, interaction) => {
-    const game = new TicTacToe({ language: 'en', commandOptionName: 'user' });
+    const game = new TicTacToe({ language: 'en', commandOptionName1: 'user', commandOptionName2: 'size' });
     game.handleInteraction(interaction);
 }
     module.exports = {
@@ -13,7 +13,13 @@ const run = async (client, interaction) => {
                 name: 'user',
                 description: "Mention the User",
                 required: false
-            }
+            },
+            {
+                type: "SIZE",
+                name: "size",
+                description: "State the size of the board",
+                required: false
+            },
         ],            
         run
 }
