@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: bot/builder/GameBoardBuilder.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: bot/builder/GameBoardBuilder.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+var __importDefault = (this &amp;&amp; this.__importDefault) || function (mod) {
+    return (mod &amp;&amp; mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const localize = __importDefault(require("../../i18n/localize"));
+const AI = __importDefault(require("../../tictactoe/AI"));
+/**@class Allows for creation of the Game Board */
+class GameBoardBuilder {
+    /**@constructs default constructor */
+    constructor() {
+        this.emojies = ['⬜', '🇽', '🅾️'];
+        this.title = '';
+        this.state = '';
+        this.boardSize = 0;
+        this.boardData = [];
+    }
+    /**
+     * @constructs
+     * @param {any} player1 first player
+     * @param {any} player2 second player
+     */
+    withTitle(player1, player2) {
+        this.title =
+            localize.default.__('game.title', {
+                player1: player1.displayName,
+                player2: player2.displayName
+            }) + '\n\n';
+        return this;
+    }
+    /**
+     * @constructs
+     * @param {any} first Emoji for player 1
+     * @param {any} second Emoji for player 2
+     */
+    withEmojies(first, second) {
+        this.emojies[1] = first;
+        this.emojies[2] = second;
+        return this;
+    }
+    /**
+     * @constructs
+     * @param {any} boardSize size of the board
+     * @param {any} board the board data
+     */
+    withBoard(boardSize, board) {
+        this.boardSize = boardSize;
+        this.boardData = board;
+        return this;
+    }
+    /**
+     * @constructs
+     * @param {any} entity Who the opponent is.
+     */
+    withEntityPlaying(entity) {
+        if (entity instanceof AI.default) {
+            this.state = localize.default.__('game.waiting-ai');
+        }
+        else if (!entity) {
+            this.state = localize.default.__('game.load');
+        }
+        else {
+            this.state = localize.default.__('game.action', { player: entity.toString() });
+        }
+        return this;
+    }
+    /**
+     * @constructs
+     * @param {any} winner winner to be included to message.
+     */
+    withEndingMessage(winner) {
+        if (winner) {
+            this.state = localize.default.__('game.win', { player: winner.toString() });
+        }
+        else {
+            this.state = localize.default.__('game.end');
+        }
+        return this;
+    }
+    toMessageOptions() {
+        let board = '';
+        for (let i = 0; i &lt; this.boardSize * this.boardSize; i++) {
+            board += this.emojies[this.boardData[i]] + ' ';
+            if ((i + 1) % this.boardSize === 0) {
+                board += '\n';
+            }
+        }
+        const state = this.state &amp;&amp; board ? '\n' + this.state : this.state;
+        return {
+            allowedMentions: { parse: ['users'] },
+            content: this.title + board + state,
+            components: []
+        };
+    }
+}
+exports.default = GameBoardBuilder;
+GameBoardBuilder.MOVE_REACTIONS = ['↖️', '⬆️', '↗️', '⬅️', '⏺️', '➡️', '↙️', '⬇️', '↘️'];
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AI.html">AI</a></li><li><a href="AppCommandRegister.html">AppCommandRegister</a></li><li><a href="CommandInteractionMessagingTunnel.html">CommandInteractionMessagingTunnel</a></li><li><a href="ComponentInteractionMessagingTunnel.html">ComponentInteractionMessagingTunnel</a></li><li><a href="ConfigProvider.html">ConfigProvider</a></li><li><a href="DuelRequest.html">DuelRequest</a></li><li><a href="EventHandler.html">EventHandler</a></li><li><a href="Game.html">Game</a></li><li><a href="GameBoard.html">GameBoard</a></li><li><a href="GameBoardBuilder.html">GameBoardBuilder</a></li><li><a href="GameBoardButtonBuilder.html">GameBoardButtonBuilder</a></li><li><a href="GameCommand.html">GameCommand</a></li><li><a href="GameStateManager.html">GameStateManager</a></li><li><a href="GameStateValidator.html">GameStateValidator</a></li><li><a href="I18nProvider.html">I18nProvider</a></li><li><a href="MessagingTunnel.html">MessagingTunnel</a></li><li><a href="TextMessagingTunnel.html">TextMessagingTunnel</a></li><li><a href="TicTacToe.html">TicTacToe</a></li><li><a href="TicTacToeBot.html">TicTacToeBot</a></li><li><a href="optional.html">optional</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getOpponent">getOpponent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Wed Nov 30 2022 00:09:12 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

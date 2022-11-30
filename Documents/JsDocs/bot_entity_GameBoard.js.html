@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: bot/entity/GameBoard.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: bot/entity/GameBoard.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+var __awaiter = (this &amp;&amp; this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this &amp;&amp; this.__importDefault) || function (mod) {
+    return (mod &amp;&amp; mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const GameBoardBuilder = __importDefault(require("../builder/GameBoardBuilder"));
+const GameBoardButtonBuilder = __importDefault(require("../builder/GameBoardButtonBuilder"));
+const localize = __importDefault(require("../../i18n/localize"));
+const AI = __importDefault(require("../../tictactoe/AI"));
+const Game = __importDefault(require("../../tictactoe/Game"));
+/**@class */
+class GameBoard {
+    /**
+     * @constructs
+     * @param {any} manager
+     * @param {any} tunnel
+     * @param {any} member2
+     * @param {any} configuration
+     */
+    constructor(manager, tunnel, member2, configuration) {
+        this.manager = manager;
+        this.tunnel = tunnel;
+        this.game = new Game.default(configuration.boardSize || 3);
+        this._entities = [tunnel.author, member2];
+        this.reactionsLoaded = false;
+        this.configuration = configuration;
+    }
+    get entities() {
+        return this._entities;
+    }
+    get content() {
+        const builder = this.configuration.gameBoardReactions
+            ? new GameBoardBuilder.default()
+            : new GameBoardButtonBuilder.default();
+        builder
+            .withTitle(this.entities[0], this.entities[1])
+            .withBoard(this.game.boardSize, this.game.board)
+            .withEntityPlaying(this.reactionsLoaded ? this.getEntity(this.game.currentPlayer) : undefined);
+        if (this.game.finished) {
+            builder.withEndingMessage(this.getEntity(this.game.winner));
+        }
+        const emojies = this.configuration.gameBoardEmojies;
+        if (emojies &amp;&amp; emojies.length === 2) {
+            builder.withEmojies(emojies[0], emojies[1]);
+        }
+        if (this.configuration.gameBoardDisableButtons &amp;&amp;
+            builder instanceof GameBoardButtonBuilder.default) {
+            builder.withButtonsDisabledAfterUse();
+        }
+        return builder.toMessageOptions();
+    }
+    /**
+     * @method
+     * @param {any} reaction
+     */
+    static reactionToMove(reaction) {
+        return GameBoardBuilder.default.MOVE_REACTIONS.indexOf(reaction);
+    }
+    /**
+     * @method
+     * @param {any} identifier
+     */
+    static buttonIdentifierToMove(identifier) {
+        var _a;
+        return (_a = parseInt(identifier)) !== null &amp;&amp; _a !== void 0 ? _a : -1;
+    }
+    /**
+     * @method
+     * @param {any} message
+     */
+    attachTo(message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.configuration.gameBoardReactions) {
+                for (const reaction of GameBoardBuilder.default.MOVE_REACTIONS) {
+                    try {
+                        yield message.react(reaction);
+                    }
+                    catch (_a) {
+                        yield this.onExpire();
+                        return;
+                    }
+                }
+            }
+            this.reactionsLoaded = true;
+            yield this.update();
+            yield this.attemptNextTurn();
+        });
+    }
+    /**@method */
+    attemptNextTurn() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const currentEntity = this.getEntity(this.game.currentPlayer);
+            if (currentEntity instanceof AI.default) {
+                const result = currentEntity.operate(this.game);
+                if (result.move !== undefined) {
+                    yield this.playTurn(result.move);
+                }
+            }
+            else {
+                this.awaitMove();
+            }
+        });
+    }
+    /**
+     * @method
+     * @param {any} interaction
+     */
+    update(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (interaction) {
+                return interaction.update(this.content);
+            }
+            else {
+                return this.tunnel.editReply(this.content);
+            }
+        });
+    }
+    /**
+     * @method
+     * @param {any} index
+     */
+    getEntity(index) {
+        return index &amp;&amp; index > 0 ? this._entities[index - 1] : undefined;
+    }
+    /**
+     * @method
+     * @param {any} collected
+     */
+    onEmojiMoveSelected(collected) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const move = GameBoardBuilder.default.MOVE_REACTIONS.indexOf(collected.first().emoji.name);
+            return this.playTurn(move);
+        });
+    }
+    /**
+     * @method
+     * @param {any} interaction
+     */
+    onButtonMoveSelected(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const move = GameBoard.buttonIdentifierToMove(interaction.customId);
+            return this.playTurn(move, interaction);
+        });
+    }
+    /**
+     * @method
+     * @param {any} move
+     * @param {any} interaction
+     */
+    playTurn(move, interaction) {
+        var _a, _b;
+        return __awaiter(this, void 0, void 0, function* () {
+            this.game.updateBoard(this.game.currentPlayer, move);
+            if (this.game.finished) {
+                const winner = this.getEntity(this.game.winner);
+                if (this.configuration.gameBoardDelete) {
+                    yield this.tunnel.end(new GameBoardBuilder.default().withEndingMessage(winner).toMessageOptions());
+                }
+                else {
+                    yield ((_b = (_a = this.tunnel.reply) === null || _a === void 0 ? void 0 : _a.reactions) === null || _b === void 0 ? void 0 : _b.removeAll());
+                    yield this.update(interaction);
+                }
+                this.manager.endGame(this, winner !== null &amp;&amp; winner !== void 0 ? winner : null);
+            }
+            else {
+                this.game.nextPlayer();
+                yield this.update(interaction);
+                yield this.attemptNextTurn();
+            }
+        });
+    }
+    /**@method */
+    onExpire() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.tunnel.end({ content: localize.default.__('game.expire'), components: [] });
+            this.manager.endGame(this);
+        });
+    }
+    /**@method */
+    awaitMove() {
+        var _a, _b;
+        const expireTime = ((_a = this.configuration.gameExpireTime) !== null &amp;&amp; _a !== void 0 ? _a : 30) * 1000;
+        if (!this.tunnel.reply)
+            return;
+        const currentEntity = (_b = this.getEntity(this.game.currentPlayer)) === null || _b === void 0 ? void 0 : _b.id;
+        if (this.configuration.gameBoardReactions) {
+            this.tunnel.reply
+                .awaitReactions({
+                filter: (reaction, user) => reaction.emoji.name != null &amp;&amp;
+                    user.id === currentEntity &amp;&amp;
+                    this.game.isMoveValid(GameBoard.reactionToMove(reaction.emoji.name)),
+                max: 1,
+                time: expireTime,
+                errors: ['time']
+            })
+                .then(this.onEmojiMoveSelected.bind(this))
+                .catch(this.onExpire.bind(this));
+        }
+        else {
+            this.tunnel.reply
+                .createMessageComponentCollector({
+                filter: interaction => interaction.user.id === currentEntity &amp;&amp;
+                    this.game.isMoveValid(GameBoard.buttonIdentifierToMove(interaction.customId)),
+                max: 1,
+                time: expireTime
+            })
+                .on('collect', this.onButtonMoveSelected.bind(this))
+                .on('end', (_, reason) => __awaiter(this, void 0, void 0, function* () {
+                if (reason !== 'limit') {
+                    yield this.onExpire();
+                }
+            }));
+        }
+    }
+}
+exports.default = GameBoard;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AI.html">AI</a></li><li><a href="AppCommandRegister.html">AppCommandRegister</a></li><li><a href="CommandInteractionMessagingTunnel.html">CommandInteractionMessagingTunnel</a></li><li><a href="ComponentInteractionMessagingTunnel.html">ComponentInteractionMessagingTunnel</a></li><li><a href="ConfigProvider.html">ConfigProvider</a></li><li><a href="DuelRequest.html">DuelRequest</a></li><li><a href="EventHandler.html">EventHandler</a></li><li><a href="Game.html">Game</a></li><li><a href="GameBoard.html">GameBoard</a></li><li><a href="GameBoardBuilder.html">GameBoardBuilder</a></li><li><a href="GameBoardButtonBuilder.html">GameBoardButtonBuilder</a></li><li><a href="GameCommand.html">GameCommand</a></li><li><a href="GameStateManager.html">GameStateManager</a></li><li><a href="GameStateValidator.html">GameStateValidator</a></li><li><a href="I18nProvider.html">I18nProvider</a></li><li><a href="MessagingTunnel.html">MessagingTunnel</a></li><li><a href="TextMessagingTunnel.html">TextMessagingTunnel</a></li><li><a href="TicTacToe.html">TicTacToe</a></li><li><a href="TicTacToeBot.html">TicTacToeBot</a></li><li><a href="optional.html">optional</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getOpponent">getOpponent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Wed Nov 30 2022 00:09:12 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,6 +1,14 @@
+"use strict"
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+
 const sumOfTwo = require('./index');
-const  { getResult }  = require('./slashcommands/rps')
-const  { getRandomCard, removeCard, getCardValue }  = require('./slashcommands/hilo')
+const { getResult } = require('./slashcommands/rps');
+const { getRandomCard, removeCard, getCardValue } = require('./slashcommands/hilo');
+const AI = require('./node_modules/discord-tictactoe/dist/src/tictactoe/AI');
+const Game = require('./node_modules/discord-tictactoe/dist/src/tictactoe/Game');
 
 //to run coverage, type > npm test -- --coverage
 //Node.js v18.12.0
@@ -141,3 +149,10 @@ test('P1 = Scissors, P2 = Rock || = Loss', () => {
 test('P1 = Scissors, P2 = Scissors || = Tie', () => {
   expect(getResult('✂️', '✂️')).toBe("It's a tie")
 });
+
+let error = console.error;
+
+console.error = function (message) {
+    error.apply(console, arguments);
+    throw (message instanceof Error ? message : new Error(message));
+}
